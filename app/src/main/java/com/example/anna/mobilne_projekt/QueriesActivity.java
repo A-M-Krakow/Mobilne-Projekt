@@ -109,19 +109,22 @@ public class QueriesActivity extends ListActivity {
             for (int i = 0; i<nl.getLength(); i++) {
                 HashMap<String, String> map = new HashMap<String, String>();
                 Element e = (Element) nl.item(i);
-                map.put(KEY_QUERY, "Data przyjazdu: " + parser.getValue(e, KEY_AR_DATE) + "\nData wyjazdu: " +   parser.getValue(e, KEY_DEP_DATE) + " (" +  parser.getValue(e, KEY_DAYS) + " dni)");
-                map.put(KEY_CLIENT, "Imię klienta: " + parser.getValue(e, KEY_NAME) + " Nazwisko klienta: " +   parser.getValue(e, KEY_SURNAME) + " Email klienta: " +   parser.getValue(e, KEY_EMAIL) + " Telefon klienta: " +   parser.getValue(e, KEY_PHONE) );
-                map.put(KEY_DESCRIPTION, "Ilość dorosłych: " + parser.getValue(e, KEY_ADULTS) + " Ilość dzieci: " + parser.getValue(e, KEY_BABIES) + " Pies: " + parser.getValue(e, KEY_DOG) + " PKP:" + parser.getValue(e, KEY_TRAIN) + " Samolot: " + parser.getValue(e, KEY_AIRPORT) + " Sprzątanie: " + parser.getValue(e, KEY_CLEANING) );
 
-
-
-
-
+                map.put(KEY_QUERY, "od: " + parser.getValue(e, KEY_AR_DATE) + " do: " +  parser.getValue(e, KEY_DEP_DATE) + " (" + parser.getValue(e, KEY_DAYS) + " dni)");
+                map.put(KEY_NAME, parser.getValue(e, KEY_NAME));
+                map.put(KEY_SURNAME, parser.getValue(e, KEY_SURNAME));
+                map.put(KEY_EMAIL, parser.getValue(e, KEY_EMAIL));
+                map.put(KEY_PHONE, parser.getValue(e, KEY_PHONE));
+                map.put(KEY_ADULTS, parser.getValue(e, KEY_ADULTS));
+                map.put(KEY_BABIES, parser.getValue(e, KEY_BABIES));
+                map.put(KEY_DOG, parser.getValue(e, KEY_DOG));
+                map.put(KEY_TRAIN, parser.getValue(e, KEY_TRAIN));
+                map.put(KEY_AIRPORT, parser.getValue(e, KEY_AIRPORT));
+                map.put(KEY_CLEANING, parser.getValue(e, KEY_CLEANING));
                 menuItems.add(map);
-
             }
             Log.i("ABC", menuItems.toString());
-            ListAdapter adapter = new SimpleAdapter(QueriesActivity.this, menuItems,R.layout.list_item, new String[] {KEY_QUERY, KEY_DESCRIPTION, KEY_CLIENT}, new int[] {R.id.zapytanie, R.id.opis, R.id.klient});
+            ListAdapter adapter = new SimpleAdapter(QueriesActivity.this, menuItems,R.layout.list_item, new String[] {KEY_QUERY}, new int[] {R.id.queryTextViev});
 
             QueriesActivity.this.setListAdapter(adapter);
 
