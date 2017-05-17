@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/zapytanie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="#33b5e5"
+        android:textIsSelectable="true"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/opis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:textColor="#acacac"
+        android:textIsSelectable="true"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/klient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#acacac"
+        android:paddingBottom="2dip"
+        android:textIsSelectable="true"
+        android:textSize="12sp"/>
+
+
+</LinearLayout>
