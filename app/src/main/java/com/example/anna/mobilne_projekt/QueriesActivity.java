@@ -1,15 +1,22 @@
 package com.example.anna.mobilne_projekt;
 
 import android.app.ListActivity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,6 +43,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class QueriesActivity extends ListActivity {
 
     private String url = "http://a-m.netstrefa.pl/retrieve2.php";
+    private Document doc;
 
     private final String KEY_CLIENT = "klient";
     private final String KEY_QUERY = "zapytanie";
@@ -57,6 +65,8 @@ public class QueriesActivity extends ListActivity {
     private final String KEY_AIRPORT= "lotnisko";
     private final String KEY_DOG= "pies";
     private final String KEY_CLEANING= "sprzatanie";
+    private XMLParser parser = new XMLParser();
+
 
 
 
@@ -100,8 +110,8 @@ public class QueriesActivity extends ListActivity {
         }
 
         protected void onPostExecute(String result) {
-            XMLParser parser = new XMLParser();
-            Document doc = parser.getDomElement(result);
+
+            doc = parser.getDomElement(result);
             ArrayList<HashMap<String, String>> menuItems = new ArrayList<HashMap<String, String>>();
 
             NodeList nl = doc.getElementsByTagName(KEY_QUERY);
@@ -109,9 +119,9 @@ public class QueriesActivity extends ListActivity {
             for (int i = 0; i<nl.getLength(); i++) {
                 HashMap<String, String> map = new HashMap<String, String>();
                 Element e = (Element) nl.item(i);
-
-                map.put(KEY_QUERY, "od: " + parser.getValue(e, KEY_AR_DATE) + " do: " +  parser.getValue(e, KEY_DEP_DATE) + " (" + parser.getValue(e, KEY_DAYS) + " dni)");
-                map.put(KEY_NAME, parser.getValue(e, KEY_NAME));
+                map.put(KEY_QUERY, "od: " + parser.getValue(e, KEY_AR_DATE) + " do: " +  parser.getValue(e, KEY_DEP_DATE) + " (" + parser.getValue(e, KEY_DAYS) + " dni) ");
+                map.put(KEY_ID,  e.getAttribute("id"));
+               /* map.put(KEY_NAME, parser.getValue(e, KEY_NAME));
                 map.put(KEY_SURNAME, parser.getValue(e, KEY_SURNAME));
                 map.put(KEY_EMAIL, parser.getValue(e, KEY_EMAIL));
                 map.put(KEY_PHONE, parser.getValue(e, KEY_PHONE));
@@ -120,11 +130,10 @@ public class QueriesActivity extends ListActivity {
                 map.put(KEY_DOG, parser.getValue(e, KEY_DOG));
                 map.put(KEY_TRAIN, parser.getValue(e, KEY_TRAIN));
                 map.put(KEY_AIRPORT, parser.getValue(e, KEY_AIRPORT));
-                map.put(KEY_CLEANING, parser.getValue(e, KEY_CLEANING));
+                map.put(KEY_CLEANING, parser.getValue(e, KEY_CLEANING));*/
                 menuItems.add(map);
             }
-            Log.i("ABC", menuItems.toString());
-            ListAdapter adapter = new SimpleAdapter(QueriesActivity.this, menuItems,R.layout.list_item, new String[] {KEY_QUERY}, new int[] {R.id.queryTextViev});
+            ListAdapter adapter = new SimpleAdapter(QueriesActivity.this, menuItems,R.layout.list_item, new String[] {KEY_QUERY, KEY_ID}, new int[] {R.id.queryTextViev, R.id.queryId});
 
             QueriesActivity.this.setListAdapter(adapter);
 
@@ -174,5 +183,29 @@ public class QueriesActivity extends ListActivity {
         }
     }
 
+    public void onItemClick(View view) {
+        ViewGroup row = (ViewGroup) view.getParent();
+        TextView tekst = (TextView) row.getChildAt(0);
+        String idZapytania = tekst.getText().toString();
+
+        Element currentQuery = doc.getElementById(idZapytania);
+
+        Intent inten = new Intent(this, QueryActivity.class);
+        inten.putExtra("name",parser.getValue(currentQuery, KEY_NAME));
+        inten.putExtra("surname",parser.getValue(currentQuery, KEY_SURNAME));
+        inten.putExtra("email",parser.getValue(currentQuery, KEY_EMAIL));
+        inten.putExtra("phone",parser.getValue(currentQuery, KEY_PHONE));
+        inten.putExtra("adults",parser.getValue(currentQuery, KEY_ADULTS));
+        inten.putExtra("babies",parser.getValue(currentQuery, KEY_BABIES));
+        inten.putExtra("dog",parser.getValue(currentQuery, KEY_DOG));
+        inten.putExtra("train",parser.getValue(currentQuery, KEY_TRAIN));
+        inten.putExtra("airport",parser.getValue(currentQuery, KEY_AIRPORT));
+        inten.putExtra("cleaning",parser.getValue(currentQuery, KEY_CLEANING));
+        inten.putExtra("ar_date",parser.getValue(currentQuery, KEY_AR_DATE));
+        inten.putExtra("dep_date",parser.getValue(currentQuery, KEY_DEP_DATE));
+        inten.putExtra("days",parser.getValue(currentQuery, KEY_DAYS));
+
+        startActivity(inten);
+    }
 
 }

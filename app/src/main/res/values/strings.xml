@@ -1,18 +1,19 @@
 <resources>
     <string name="app_name">Mobilne-Projekt</string>
-    <string name="name">Imię:</string>
-    <string name="surname">nazwisko</string>
-    <string name="email">email</string>
-    <string name="telephone">telefon</string>
-    <string name="arrival_date">Data przyjazdu:</string>
-    <string name="departue_date">Data wyjazdu:</string>
-    <string name="number_adults">Ilość dorosłych:</string>
-    <string name="number_babies">Ilość dzieci:</string>
-    <string name="train">PKP</string>
-    <string name="dog">Pies:</string>
-    <string name="airport">Lotnisko:</string>
-    <string name="cleaning">Sprzątanie:</string>
-    <string name="days_number">Ilość dni:</string>
+    <string name="name">Imię: </string>
+    <string name="surname">Nazwisko: </string>
+    <string name="email">Email: </string>
+    <string name="telephone">Telefon: </string>
+    <string name="arrival_date">Od: </string>
+    <string name="departue_date">Do: </string>
+    <string name="number_adults">Ilość dorosłych: </string>
+    <string name="number_babies">Ilość dzieci: </string>
+    <string name="train">PKP: </string>
+    <string name="dog">Pies: </string>
+    <string name="airport">Lotnisko: </string>
+    <string name="cleaning">Sprzątanie: </string>
+    <string name="days_number">Ilość dni: </string>
     <string name="download_Data">Pobierz dane</string>
     <string name="Queries">Zapytania</string>
+    <string name="days">Dni:</string>
 </resources>
