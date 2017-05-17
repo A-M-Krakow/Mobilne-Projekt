@@ -48,6 +48,8 @@ public class QueriesActivity extends ListActivity {
     private final String KEY_PHONE = "telefonKlienta";
 
     private final String KEY_AR_DATE = "dataPrzyj";
+    private final String KEY_DEP_DATE = "dataWyj";
+
     private final String KEY_DAYS = "iloscDni";
     private final String KEY_ADULTS = "iloscDoroslych";
     private final String KEY_BABIES = "iloscDzieci";
@@ -107,7 +109,7 @@ public class QueriesActivity extends ListActivity {
             for (int i = 0; i<nl.getLength(); i++) {
                 HashMap<String, String> map = new HashMap<String, String>();
                 Element e = (Element) nl.item(i);
-                map.put(KEY_QUERY, "Data przyjazdu: " + parser.getValue(e, KEY_AR_DATE) + " ilość dni:" +   parser.getValue(e, KEY_DAYS));
+                map.put(KEY_QUERY, "Data przyjazdu: " + parser.getValue(e, KEY_AR_DATE) + "\nData wyjazdu: " +   parser.getValue(e, KEY_DEP_DATE) + " (" +  parser.getValue(e, KEY_DAYS) + " dni)");
                 map.put(KEY_CLIENT, "Imię klienta: " + parser.getValue(e, KEY_NAME) + " Nazwisko klienta: " +   parser.getValue(e, KEY_SURNAME) + " Email klienta: " +   parser.getValue(e, KEY_EMAIL) + " Telefon klienta: " +   parser.getValue(e, KEY_PHONE) );
                 map.put(KEY_DESCRIPTION, "Ilość dorosłych: " + parser.getValue(e, KEY_ADULTS) + " Ilość dzieci: " + parser.getValue(e, KEY_BABIES) + " Pies: " + parser.getValue(e, KEY_DOG) + " PKP:" + parser.getValue(e, KEY_TRAIN) + " Samolot: " + parser.getValue(e, KEY_AIRPORT) + " Sprzątanie: " + parser.getValue(e, KEY_CLEANING) );
 
