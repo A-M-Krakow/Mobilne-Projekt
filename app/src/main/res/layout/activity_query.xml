@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="match_parent">
 <LinearLayout
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -285,10 +288,36 @@
             />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/callButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/call"
+        android:onClick="callClient"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
 
 
+    <Button
+    android:id="@+id/emailButtonYes"
+    android:layout_width="0px"
+    android:layout_weight="1"
+    android:layout_height="wrap_content"
+    android:text="@string/yesMessage"
+    android:onClick="emailClient"/>
 
-
+    <Button
+    android:id="@+id/emailButtonNo"
+    android:layout_width="0px"
+    android:layout_weight="1"
+    android:layout_height="wrap_content"
+    android:text="@string/noMessage"
+    android:onClick="emailClient"/>
+    </LinearLayout>
 
 </LinearLayout>
+</ScrollView>

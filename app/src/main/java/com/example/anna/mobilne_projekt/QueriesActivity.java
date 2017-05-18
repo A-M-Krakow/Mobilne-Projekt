@@ -1,6 +1,7 @@
 package com.example.anna.mobilne_projekt;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -66,6 +67,7 @@ public class QueriesActivity extends ListActivity {
     private final String KEY_DOG= "pies";
     private final String KEY_CLEANING= "sprzatanie";
     private XMLParser parser = new XMLParser();
+    private ProgressDialog dialog;
 
 
 
@@ -85,7 +87,11 @@ public class QueriesActivity extends ListActivity {
     private class ReadXMLTask extends AsyncTask<String, Void, String> {
         @Override
 
-        protected void onPreExecute() {}
+
+        protected void onPreExecute() {
+            dialog = ProgressDialog.show(QueriesActivity.this, "",
+                    "Ładowanie danych...", true);
+        }
 
         protected String doInBackground(String... urls) {
             String response = "";
@@ -110,6 +116,7 @@ public class QueriesActivity extends ListActivity {
         }
 
         protected void onPostExecute(String result) {
+            dialog.dismiss();
 
             doc = parser.getDomElement(result);
             ArrayList<HashMap<String, String>> menuItems = new ArrayList<HashMap<String, String>>();
@@ -121,16 +128,6 @@ public class QueriesActivity extends ListActivity {
                 Element e = (Element) nl.item(i);
                 map.put(KEY_QUERY, "od: " + parser.getValue(e, KEY_AR_DATE) + " do: " +  parser.getValue(e, KEY_DEP_DATE) + " (" + parser.getValue(e, KEY_DAYS) + " dni) ");
                 map.put(KEY_ID,  e.getAttribute("id"));
-               /* map.put(KEY_NAME, parser.getValue(e, KEY_NAME));
-                map.put(KEY_SURNAME, parser.getValue(e, KEY_SURNAME));
-                map.put(KEY_EMAIL, parser.getValue(e, KEY_EMAIL));
-                map.put(KEY_PHONE, parser.getValue(e, KEY_PHONE));
-                map.put(KEY_ADULTS, parser.getValue(e, KEY_ADULTS));
-                map.put(KEY_BABIES, parser.getValue(e, KEY_BABIES));
-                map.put(KEY_DOG, parser.getValue(e, KEY_DOG));
-                map.put(KEY_TRAIN, parser.getValue(e, KEY_TRAIN));
-                map.put(KEY_AIRPORT, parser.getValue(e, KEY_AIRPORT));
-                map.put(KEY_CLEANING, parser.getValue(e, KEY_CLEANING));*/
                 menuItems.add(map);
             }
             ListAdapter adapter = new SimpleAdapter(QueriesActivity.this, menuItems,R.layout.list_item, new String[] {KEY_QUERY, KEY_ID}, new int[] {R.id.queryTextViev, R.id.queryId});
@@ -190,22 +187,22 @@ public class QueriesActivity extends ListActivity {
 
         Element currentQuery = doc.getElementById(idZapytania);
 
-        Intent inten = new Intent(this, QueryActivity.class);
-        inten.putExtra("name",parser.getValue(currentQuery, KEY_NAME));
-        inten.putExtra("surname",parser.getValue(currentQuery, KEY_SURNAME));
-        inten.putExtra("email",parser.getValue(currentQuery, KEY_EMAIL));
-        inten.putExtra("phone",parser.getValue(currentQuery, KEY_PHONE));
-        inten.putExtra("adults",parser.getValue(currentQuery, KEY_ADULTS));
-        inten.putExtra("babies",parser.getValue(currentQuery, KEY_BABIES));
-        inten.putExtra("dog",parser.getValue(currentQuery, KEY_DOG));
-        inten.putExtra("train",parser.getValue(currentQuery, KEY_TRAIN));
-        inten.putExtra("airport",parser.getValue(currentQuery, KEY_AIRPORT));
-        inten.putExtra("cleaning",parser.getValue(currentQuery, KEY_CLEANING));
-        inten.putExtra("ar_date",parser.getValue(currentQuery, KEY_AR_DATE));
-        inten.putExtra("dep_date",parser.getValue(currentQuery, KEY_DEP_DATE));
-        inten.putExtra("days",parser.getValue(currentQuery, KEY_DAYS));
+        Intent intent = new Intent(this, QueryActivity.class);
+        intent.putExtra("name",parser.getValue(currentQuery, KEY_NAME));
+        intent.putExtra("surname",parser.getValue(currentQuery, KEY_SURNAME));
+        intent.putExtra("email",parser.getValue(currentQuery, KEY_EMAIL));
+        intent.putExtra("phone",parser.getValue(currentQuery, KEY_PHONE));
+        intent.putExtra("adults",parser.getValue(currentQuery, KEY_ADULTS));
+        intent.putExtra("babies",parser.getValue(currentQuery, KEY_BABIES));
+        intent.putExtra("dog",parser.getValue(currentQuery, KEY_DOG));
+        intent.putExtra("train",parser.getValue(currentQuery, KEY_TRAIN));
+        intent.putExtra("airport",parser.getValue(currentQuery, KEY_AIRPORT));
+        intent.putExtra("cleaning",parser.getValue(currentQuery, KEY_CLEANING));
+        intent.putExtra("ar_date",parser.getValue(currentQuery, KEY_AR_DATE));
+        intent.putExtra("dep_date",parser.getValue(currentQuery, KEY_DEP_DATE));
+        intent.putExtra("days",parser.getValue(currentQuery, KEY_DAYS));
 
-        startActivity(inten);
+        startActivity(intent);
     }
 
 }

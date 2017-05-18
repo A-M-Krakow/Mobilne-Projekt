@@ -16,4 +16,9 @@
     <string name="download_Data">Pobierz dane</string>
     <string name="Queries">Zapytania</string>
     <string name="days">Dni:</string>
+    <string name="call">Zadzwoń</string>
+    <string name="emailClient">Napisz wiadomość</string>
+    <string name="yesMessage">Wiadomość - termin dostępny.</string>
+    <string name="noMessage">Wiadomość - termin niedostępny.</string>
+    <string name="choosseEmaiClient">Wybierz program do wysłania wiadomości:</string>
 </resources>
