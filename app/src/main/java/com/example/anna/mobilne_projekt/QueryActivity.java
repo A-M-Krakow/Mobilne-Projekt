@@ -113,7 +113,7 @@ public class QueryActivity extends AppCompatActivity {
             finish();
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(QueryActivity.this,
-                    "Brak aplikacji do wysyłania wiadomości!", Toast.LENGTH_SHORT).show();
+                    R.string.noEmailApp, Toast.LENGTH_SHORT).show();
         }
 
     }

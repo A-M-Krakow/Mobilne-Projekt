@@ -1,5 +1,6 @@
 package com.example.anna.mobilne_projekt;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -90,7 +91,7 @@ public class QueriesActivity extends ListActivity {
 
         protected void onPreExecute() {
             dialog = ProgressDialog.show(QueriesActivity.this, "",
-                    "Ładowanie danych...", true);
+                    getString(R.string.loadingData), true);
         }
 
         protected String doInBackground(String... urls) {
@@ -118,25 +119,35 @@ public class QueriesActivity extends ListActivity {
         protected void onPostExecute(String result) {
             dialog.dismiss();
 
-            doc = parser.getDomElement(result);
-            ArrayList<HashMap<String, String>> menuItems = new ArrayList<HashMap<String, String>>();
+            if (result != "") {
 
-            NodeList nl = doc.getElementsByTagName(KEY_QUERY);
+                doc = parser.getDomElement(result);
+                ArrayList<HashMap<String, String>> menuItems = new ArrayList<HashMap<String, String>>();
 
-            for (int i = 0; i<nl.getLength(); i++) {
-                HashMap<String, String> map = new HashMap<String, String>();
-                Element e = (Element) nl.item(i);
-                map.put(KEY_QUERY, "od: " + parser.getValue(e, KEY_AR_DATE) + " do: " +  parser.getValue(e, KEY_DEP_DATE) + " (" + parser.getValue(e, KEY_DAYS) + " dni) ");
-                map.put(KEY_ID,  e.getAttribute("id"));
-                menuItems.add(map);
+                NodeList nl = doc.getElementsByTagName(KEY_QUERY);
+
+                for (int i = 0; i < nl.getLength(); i++) {
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    Element e = (Element) nl.item(i);
+                    map.put(KEY_QUERY, "od: " + parser.getValue(e, KEY_AR_DATE) + " do: " + parser.getValue(e, KEY_DEP_DATE) + " (" + parser.getValue(e, KEY_DAYS) + " dni) ");
+                    map.put(KEY_ID, e.getAttribute("id"));
+                    menuItems.add(map);
+                }
+                ListAdapter adapter = new SimpleAdapter(QueriesActivity.this, menuItems, R.layout.list_item, new String[]{KEY_QUERY, KEY_ID}, new int[]{R.id.queryTextViev, R.id.queryId});
+
+                QueriesActivity.this.setListAdapter(adapter);
+
             }
-            ListAdapter adapter = new SimpleAdapter(QueriesActivity.this, menuItems,R.layout.list_item, new String[] {KEY_QUERY, KEY_ID}, new int[] {R.id.queryTextViev, R.id.queryId});
+            else {
+                finish();
+                Toast.makeText(QueriesActivity.this,
+                        R.string.noInternetConn, Toast.LENGTH_SHORT).show();
 
-            QueriesActivity.this.setListAdapter(adapter);
+            }
+
+
 
         }
-
-
 
     }
 

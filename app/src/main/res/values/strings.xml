@@ -18,7 +18,10 @@
     <string name="days">Dni:</string>
     <string name="call">Zadzwoń</string>
     <string name="emailClient">Napisz wiadomość</string>
-    <string name="yesMessage">Wiadomość - termin dostępny.</string>
-    <string name="noMessage">Wiadomość - termin niedostępny.</string>
+    <string name="yesMessage">Email - POTWIERDŹ</string>
+    <string name="noMessage">Email - ODRZUĆ</string>
     <string name="choosseEmaiClient">Wybierz program do wysłania wiadomości:</string>
+    <string name="noEmailApp">Brak aplikacji email!</string>
+    <string name="noInternetConn">Brak połączenia z Internetem!</string>
+    <string name="loadingData">Ładowanie danych...</string>
 </resources>
