@@ -22,7 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".QueriesActivity" />
-        <activity android:name=".QueryActivity"></activity>
+        <activity android:name=".QueryActivity" />
+        <activity android:name=".BookingsActivity"></activity>
     </application>
 
 </manifest>

@@ -24,4 +24,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, QueriesActivity.class);
         startActivity(intent);
     }
+
+    public void makeBooking(View view)
+    {
+        Intent intent = new Intent(this, BookingsActivity.class);
+        startActivity(intent);
+    }
 }
