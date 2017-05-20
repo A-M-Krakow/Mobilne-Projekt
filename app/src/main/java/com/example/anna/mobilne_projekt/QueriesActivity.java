@@ -199,20 +199,24 @@ public class QueriesActivity extends ListActivity {
         Element currentQuery = doc.getElementById(idZapytania);
 
         Intent intent = new Intent(this, QueryActivity.class);
-        intent.putExtra("name",parser.getValue(currentQuery, KEY_NAME));
-        intent.putExtra("surname",parser.getValue(currentQuery, KEY_SURNAME));
-        intent.putExtra("email",parser.getValue(currentQuery, KEY_EMAIL));
-        intent.putExtra("phone",parser.getValue(currentQuery, KEY_PHONE));
-        intent.putExtra("adults",parser.getValue(currentQuery, KEY_ADULTS));
-        intent.putExtra("babies",parser.getValue(currentQuery, KEY_BABIES));
-        intent.putExtra("dog",parser.getValue(currentQuery, KEY_DOG));
-        intent.putExtra("train",parser.getValue(currentQuery, KEY_TRAIN));
-        intent.putExtra("airport",parser.getValue(currentQuery, KEY_AIRPORT));
-        intent.putExtra("cleaning",parser.getValue(currentQuery, KEY_CLEANING));
-        intent.putExtra("ar_date",parser.getValue(currentQuery, KEY_AR_DATE));
-        intent.putExtra("dep_date",parser.getValue(currentQuery, KEY_DEP_DATE));
-        intent.putExtra("days",parser.getValue(currentQuery, KEY_DAYS));
 
+        Bundle bundle = new Bundle();
+
+        bundle.putString("name",parser.getValue(currentQuery, KEY_NAME));
+        bundle.putString("surname",parser.getValue(currentQuery, KEY_SURNAME));
+        bundle.putString("email",parser.getValue(currentQuery, KEY_EMAIL));
+        bundle.putString("phone",parser.getValue(currentQuery, KEY_PHONE));
+        bundle.putString("adults",parser.getValue(currentQuery, KEY_ADULTS));
+        bundle.putString("babies",parser.getValue(currentQuery, KEY_BABIES));
+        bundle.putString("dog",parser.getValue(currentQuery, KEY_DOG));
+        bundle.putString("train",parser.getValue(currentQuery, KEY_TRAIN));
+        bundle.putString("airport",parser.getValue(currentQuery, KEY_AIRPORT));
+        bundle.putString("cleaning",parser.getValue(currentQuery, KEY_CLEANING));
+        bundle.putString("ar_date",parser.getValue(currentQuery, KEY_AR_DATE));
+        bundle.putString("dep_date",parser.getValue(currentQuery, KEY_DEP_DATE));
+        bundle.putString("days",parser.getValue(currentQuery, KEY_DAYS));
+
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

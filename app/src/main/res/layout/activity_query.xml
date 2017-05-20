@@ -300,9 +300,18 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/emailButtonBook"
+            android:layout_width="0px"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/makeBoking"
+            android:onClick="bookThisQuery"/>
 
 
-    <Button
+
+
+   <Button
     android:id="@+id/emailButtonYes"
     android:layout_width="0px"
     android:layout_weight="1"

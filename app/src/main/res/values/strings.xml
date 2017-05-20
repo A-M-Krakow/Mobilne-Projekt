@@ -24,4 +24,5 @@
     <string name="noEmailApp">Brak aplikacji email!</string>
     <string name="noInternetConn">Brak połączenia z Internetem!</string>
     <string name="loadingData">Ładowanie danych...</string>
+    <string name="makeBoking">Rezerwuj</string>
 </resources>

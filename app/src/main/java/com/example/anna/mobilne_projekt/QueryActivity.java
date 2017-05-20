@@ -25,7 +25,7 @@ public class QueryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query);
-
+        Bundle bundle = getIntent().getExtras();
 
         phoneEditText = (EditText) findViewById(R.id.phoneEditText);
         emailEditText = (EditText) findViewById(R.id.emailEditText);
@@ -46,14 +46,14 @@ public class QueryActivity extends AppCompatActivity {
         CheckBox cleaningCheckBox = (CheckBox) findViewById(R.id.cleaningCheckBox);
         CheckBox airportCheckBox = (CheckBox) findViewById(R.id.airportCheckBox);
         Intent intent = getIntent();
-        nameEditText.setText(intent.getStringExtra("name"));
-        surnameEditText.setText(intent.getStringExtra("surname"));
+        nameEditText.setText(bundle.getString("name"));
+        surnameEditText.setText(bundle.getString("surname"));
 
 
-        Boolean dogBool = (!intent.getStringExtra("dog").equals("0")) ? true : false;
-        Boolean trainBool = (!intent.getStringExtra("train").equals("0")) ? true : false;
-        Boolean airportBool = (!intent.getStringExtra("airport").equals("0")) ? true : false;
-        Boolean cleaningBool = (!intent.getStringExtra("cleaning").equals("0")) ? true : false;
+        Boolean dogBool = (!bundle.getString("dog").equals("0")) ? true : false;
+        Boolean trainBool = (!bundle.getString("train").equals("0")) ? true : false;
+        Boolean airportBool = (!bundle.getString("airport").equals("0")) ? true : false;
+        Boolean cleaningBool = (!bundle.getString("cleaning").equals("0")) ? true : false;
 
 
         dogCheckBox.setChecked(dogBool);
@@ -61,13 +61,13 @@ public class QueryActivity extends AppCompatActivity {
         airportCheckBox.setChecked(airportBool);
         cleaningCheckBox.setChecked(cleaningBool);
 
-        arDateEditText.setText(intent.getStringExtra("ar_date"));
-        depDateEditText.setText(intent.getStringExtra("dep_date"));
-        daysEditText.setText(intent.getStringExtra("days"));
-        adultsEditText.setText(intent.getStringExtra("adults"));
-        babiesEditText.setText(intent.getStringExtra("babies"));
-        emailEditText.setText(intent.getStringExtra("email"));
-        phoneEditText.setText(intent.getStringExtra("phone"));
+        arDateEditText.setText(bundle.getString("ar_date"));
+        depDateEditText.setText(bundle.getString("dep_date"));
+        daysEditText.setText(bundle.getString("days"));
+        adultsEditText.setText(bundle.getString("adults"));
+        babiesEditText.setText(bundle.getString("babies"));
+        emailEditText.setText(bundle.getString("email"));
+        phoneEditText.setText(bundle.getString("phone"));
     }
 
     public void callClient(View view) {
