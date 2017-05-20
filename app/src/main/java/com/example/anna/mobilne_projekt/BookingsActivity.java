@@ -32,15 +32,20 @@ public class BookingsActivity extends AppCompatActivity {
         private String arDate;
         private int numberOfDays;
         private int numberOfAdults;
-        private Double adultsCurrentPrice;
+        private Double adultsCurrentPrice = 0.00;
         private int numberOfBabies;
+        private Double babiesCurrentPrice = 0.00;
         private int dog;
+        private Double dogCurrentPrice = 0.00;
         private int train;
+        private Double trainCurrentPrice = 0.00;
         private int airport;
+        private double airportCurrentPrice = 0.00;
         private int cleaning;
+        private Double cleaningCurrentPrice = 0.00;
 
 
-        public Booking(int bookingId, String clientName, String clientSurname, String clientPhone, String clientEmail, int confirmed, String arDate, int numberOfDays, int numberOfAdults, Double adultsCurrentPrice, int numberOfBabies, boolean dog, boolean train, boolean airport, boolean cleaning) {
+        public Booking(int bookingId, String clientName, String clientSurname, String clientPhone, String clientEmail, int confirmed, String arDate, int numberOfDays, int numberOfAdults, Double adultsCurrentPrice, int numberOfBabies, Double babiesCurrentPrice,  boolean dog, Double dogCurrentPrice,  boolean train, Double trainCurrentPrice,  boolean airport, Double airportCurrentPrice,  boolean cleaning, double cleaningCurrentPrice) {
 
             this.bookingId = bookingId;
             this.clientName = clientName;
@@ -53,18 +58,27 @@ public class BookingsActivity extends AppCompatActivity {
             this.numberOfAdults = numberOfAdults;
             this.adultsCurrentPrice = adultsCurrentPrice;
             this.numberOfBabies = numberOfBabies;
+            this.babiesCurrentPrice = babiesCurrentPrice;
 
             if(dog==false) this.dog=0;
             else this.dog=1;
 
+            this.dogCurrentPrice = dogCurrentPrice;
+
             if(train==false) this.train=0;
             else this.train=1;
+
+            this.trainCurrentPrice = trainCurrentPrice;
 
             if(airport==false) this.airport=0;
             else this.airport=1;
 
+            this.airportCurrentPrice = airportCurrentPrice;
+
             if(cleaning==false) this.cleaning=0;
             else this.cleaning=1;
+
+            this.cleaningCurrentPrice = cleaningCurrentPrice;
         }
 
         public Booking(){
@@ -107,6 +121,27 @@ public class BookingsActivity extends AppCompatActivity {
 
         public void setAdultsCurrentPrice(Double  newAdultsCurrentPrice) {this.adultsCurrentPrice = newAdultsCurrentPrice;}
 
+        public void setNumberOfBabies (int newNumberOfBabies) {this.numberOfBabies = newNumberOfBabies;}
+
+        public void setBabiesCurrentPrice(Double  newBabiesCurrentPrice) {this.babiesCurrentPrice = newBabiesCurrentPrice;}
+
+        public void setDog(int newDog) { this.dog = newDog;}
+
+        public void setDogCurrentPrice(Double newDogCurrentPrice) {this.dogCurrentPrice = newDogCurrentPrice;}
+
+        public void setTrain(int newTrain) { this.train = newTrain;}
+
+        public void setTrainCurrentPrice(Double newTrainCurrentPrice) {this.trainCurrentPrice = newTrainCurrentPrice;}
+
+        public void setAirport(int newAirport) { this.airport = newAirport;}
+
+        public void setAirportCurrentPrice(Double newAirportCurrentPrice) {this.airportCurrentPrice = newAirportCurrentPrice;}
+
+        public void setCleaning(int newCleaning) { this.cleaning = newCleaning;}
+
+        public void setCleaningCurrentPrice(Double newCleaningCurrentPrice) {this.cleaningCurrentPrice = newCleaningCurrentPrice;}
+
+
         public int getBookingId() {
             return bookingId;
         }
@@ -139,20 +174,32 @@ public class BookingsActivity extends AppCompatActivity {
             return numberOfBabies;
         }
 
+        public Double getBabiesCurrentPrice() {
+            return babiesCurrentPrice;
+        }
+
         public int getDog() {
             return dog;
         }
+
+        public Double getDogCurrentPrice() {return dogCurrentPrice;}
+
         public int getTrain() {
             return train;
         }
+
+        public Double  getTrainCurrentPrice(){return trainCurrentPrice;}
 
         public int getAirport() {
             return airport;
         }
 
+        public Double  getAirportCurrentPrice(){return airportCurrentPrice;}
+
         public int getCleaning() {
-            return cleaning;
-        }
+            return cleaning;}
+
+        public Double getCleaningCurrentPrice(){return cleaningCurrentPrice;}
 
         public int getConfirmed() {
             return confirmed;
@@ -325,6 +372,47 @@ public class BookingsActivity extends AppCompatActivity {
        booking.setNumberOfAdults(Integer.parseInt(cursor.getString(0)));
        booking.setAdultsCurrentPrice(cursor.getDouble(1));
 
+       // Pobieranie z bazy ilości i ceny dzieci dla rezerwacji o podanym Id
+       String selectBabiesBookingQuery = "select "+  KEY_NUMBER_OF_ACCOMODATIONS + ", " + KEY_CURR_PRICE +  " from " + TABLE_BOOKING_ACCOMODATIONS + " where " + KEY_BOOKING_ID + " = " + id + " and " +  KEY_ACC_NAME + " = " + "\"" + BABY_ACCOMODATION + "\"";
+       cursor= db.rawQuery(selectBabiesBookingQuery, null);
+       if (cursor.getCount() > 0) {
+           if (cursor != null) cursor.moveToFirst();
+           booking.setNumberOfBabies(Integer.parseInt(cursor.getString(0)));
+           booking.setBabiesCurrentPrice(cursor.getDouble(1));
+       }
+
+       // Pobieranie z bazy psa dla rezerwacji o podanym Id
+       String selectDogBookingQuery = "select "+  KEY_CURR_PRICE +  " from " + TABLE_BOOKING_ACCOMODATIONS + " where " + KEY_BOOKING_ID + " = " + id + " and " +  KEY_ACC_NAME + " = " + "\"" + DOG_ACCOMODATION + "\"";
+       cursor= db.rawQuery(selectDogBookingQuery, null);
+       if (cursor.getCount() > 0) {
+       if (cursor != null) cursor.moveToFirst();
+       booking.setDog(1);
+       booking.setDogCurrentPrice(cursor.getDouble(0)); }
+
+       // Pobieranie z bazy transportu z dworca dla rezerwacji o podanym Id
+       String selectTrainBookingQuery = "select "+  KEY_CURR_PRICE +  " from " + TABLE_BOOKING_ADDITIONS + " where " + KEY_BOOKING_ID + " = " + id + " and " +  KEY_ADD_NAME + " = " + "\"" + TRAIN_ADDITION + "\"";
+       cursor= db.rawQuery(selectTrainBookingQuery, null);
+       if (cursor.getCount() > 0) {
+           if (cursor != null) cursor.moveToFirst();
+           booking.setTrain(1);
+           booking.setTrainCurrentPrice(cursor.getDouble(0)); }
+
+       // Pobieranie z bazy transportu z lotniska dla rezerwacji o podanym Id
+       String selectAirportBookingQuery = "select "+ KEY_CURR_PRICE +  " from " + TABLE_BOOKING_ADDITIONS + " where " + KEY_BOOKING_ID + " = " + id + " and " +  KEY_ADD_NAME + " = " + "\"" + AIRPORT_ADDITION + "\"";
+       cursor= db.rawQuery(selectAirportBookingQuery, null);
+       if (cursor.getCount() > 0) {
+           if (cursor != null) cursor.moveToFirst();
+           booking.setAirport(1);
+           booking.setAirportCurrentPrice(cursor.getDouble(0)); }
+
+       // Pobieranie z bazy sprzątania dla rezerwacji o podanym Id
+       String selectCleaningBookingQuery = "select "+   KEY_CURR_PRICE +  " from " + TABLE_BOOKING_ADDITIONS + " where " + KEY_BOOKING_ID + " = " + id + " and " +  KEY_ADD_NAME + " = " + "\"" + CLEANING_ADDITION + "\"";
+       cursor= db.rawQuery(selectCleaningBookingQuery, null);
+       if (cursor.getCount() > 0) {
+           if (cursor != null) cursor.moveToFirst();
+           booking.setCleaning(1);
+           booking.setCleaningCurrentPrice(cursor.getDouble(0)); }
+
 
         //zwracamy rezerwację
         return booking;
@@ -407,7 +495,7 @@ public class BookingsActivity extends AppCompatActivity {
             ContentValues babiesAccomodationValues = new ContentValues();
             babiesAccomodationValues.put(KEY_BOOKING_ID, booking.getBookingId());
             babiesAccomodationValues.put(KEY_ACC_NAME, BABY_ACCOMODATION);
-            babiesAccomodationValues.put(KEY_CURR_PRICE, 14);
+            babiesAccomodationValues.put(KEY_CURR_PRICE, booking.getBabiesCurrentPrice());
             babiesAccomodationValues.put(KEY_NUMBER_OF_ACCOMODATIONS, booking.getNumberOfBabies());
             db.insert(TABLE_BOOKING_ACCOMODATIONS, null, babiesAccomodationValues);
         }
@@ -417,7 +505,7 @@ public class BookingsActivity extends AppCompatActivity {
             ContentValues dogAccomodationValues = new ContentValues();
             dogAccomodationValues.put(KEY_BOOKING_ID, booking.getBookingId());
             dogAccomodationValues.put(KEY_ACC_NAME, DOG_ACCOMODATION);
-            dogAccomodationValues.put(KEY_CURR_PRICE, 12);
+            dogAccomodationValues.put(KEY_CURR_PRICE, booking.getDogCurrentPrice());
             dogAccomodationValues.put(KEY_NUMBER_OF_ACCOMODATIONS, booking.getDog());
             db.insert(TABLE_BOOKING_ACCOMODATIONS, null, dogAccomodationValues);
         }
@@ -427,7 +515,7 @@ public class BookingsActivity extends AppCompatActivity {
             ContentValues trainValues = new ContentValues();
             trainValues.put(KEY_BOOKING_ID, booking.getBookingId());
             trainValues.put(KEY_ADD_NAME, TRAIN_ADDITION);
-            trainValues.put(KEY_CURR_PRICE, 2);
+            trainValues.put(KEY_CURR_PRICE, booking.getTrainCurrentPrice());
             db.insert(TABLE_BOOKING_ADDITIONS, null, trainValues);
         }
 
@@ -436,7 +524,7 @@ public class BookingsActivity extends AppCompatActivity {
             ContentValues airportValues = new ContentValues();
             airportValues.put(KEY_BOOKING_ID, booking.getBookingId());
             airportValues.put(KEY_ADD_NAME, AIRPORT_ADDITION);
-            airportValues.put(KEY_CURR_PRICE, 3);
+            airportValues.put(KEY_CURR_PRICE, booking.getAirportCurrentPrice());
             db.insert(TABLE_BOOKING_ADDITIONS, null, airportValues);
         }
 
@@ -445,7 +533,7 @@ public class BookingsActivity extends AppCompatActivity {
             ContentValues airportValues = new ContentValues();
             airportValues.put(KEY_BOOKING_ID, booking.getBookingId());
             airportValues.put(KEY_ADD_NAME, CLEANING_ADDITION);
-            airportValues.put(KEY_CURR_PRICE, 7);
+            airportValues.put(KEY_CURR_PRICE, booking.getCleaningCurrentPrice());
             db.insert(TABLE_BOOKING_ADDITIONS, null, airportValues);
         }
 
@@ -461,27 +549,37 @@ public class BookingsActivity extends AppCompatActivity {
 
         DatabaseHandler db = new DatabaseHandler(this);
 
+           // int bookingId, String clientName, String clientSurname, String clientPhone, String clientEmail, int confirmed, String arDate, int numberOfDays, int numberOfAdults, Double adultsCurrentPrice, int numberOfBabies, Double babiesCurrentPrice,  boolean dog, Double dogCurrentPrice,  boolean train, Double trainCurrentPrice,  boolean airport, Double airportCurrentPrice,  boolean cleaning, double cleaningCurrentPrice)
 
-        // Booking(int bookingId, String clientName, String clientSurname, String clientPhone, String clientEmail, int confirmed, String arDate, int numberOfDays, int numberOfAdults, Double adultsCurrentPrice, int numberOfBabies, boolean dog, boolean train, boolean airport, boolean cleaning)
-      int bookindId = 1;
-      db.addBooking( new Booking(bookindId, "Anna", "Madej", "122222222", "sd@sd.pl", 1, "2017-01-30", 15, 2, 50.00, 1, true, false, true, false));
+            int bookindId = 1;
+      db.addBooking( new Booking(bookindId, "Anna", "Madej", "122222222", "sd@sd.pl", 1, "2017-01-30", 15, 3, 50.00, 0, 20.00, true, 10.00, false, 25.00, true, 35.00,  false, 30.00));
       bookindId++;
-      db.addBooking( new Booking(bookindId, "Anna", "Madej", "122222222", "sd@sd.pl", 1, "2017-01-30", 15, 3, 40.00, 1, false, true, false, true));
+      db.addBooking( new Booking(bookindId, "Anna", "Madej", "122222222", "sd@sd.pl", 1, "2017-01-30", 15, 3, 40.00, 1, 20.00, false, 12.00, false, 25.00, true, 35.00,  false, 30.00));
 
 
       Booking pobranaBooking = db.getBooking(1);
 
       Log.i("LOL",
-              pobranaBooking.getBookingId() + " | " +
-              pobranaBooking.getClientName() + " | " +
-              pobranaBooking.getClientSurname() + " | " +
-              pobranaBooking.getClientPhone() + " | " +
-              pobranaBooking.getClientEmail() + " | " +
-              pobranaBooking.getConfirmed() + " | " +
-              pobranaBooking.getNumberOfAdults() + " | " +
-              pobranaBooking.getAdultsCurrentPrice() + " | " +
-              pobranaBooking.getArDate() + " | " +
-              pobranaBooking.getNumberOfDays() + " | ");
+              "ID: " +   pobranaBooking.getBookingId() + " \n " +
+             "Imię: " +  pobranaBooking.getClientName() + " \n " +
+             "Nazwisko: " +  pobranaBooking.getClientSurname() + " \n " +
+              "Telefon: " + pobranaBooking.getClientPhone() + " \n " +
+              "Email: " + pobranaBooking.getClientEmail() + " \n " +
+              "Potwierdzona: " + pobranaBooking.getConfirmed() + " \n " +
+               "Data przyjazdu: " +  pobranaBooking.getArDate() + " | " +
+               "Ilosc dni: " + pobranaBooking.getNumberOfDays() + " \n " +
+              "Ilosc Dorosłych: " +  pobranaBooking.getNumberOfAdults() + " \n " +
+              "Cena za dorosłego: " +  pobranaBooking.getAdultsCurrentPrice() + " \n " +
+              "Ilosc Dzieci: " +  pobranaBooking.getNumberOfBabies() + " \n" +
+              "Cena za dziecko: " +  pobranaBooking.getBabiesCurrentPrice()+ " \n" +
+               "Pies : " +  pobranaBooking.getDog() + " \n" +
+               "Cena za psa: " +  pobranaBooking.getDogCurrentPrice()+ " \n" +
+                      "Pkp : " +  pobranaBooking.getTrain() + " \n" +
+                      "Cena za pkp: " +  pobranaBooking.getTrainCurrentPrice()+ " \n" +
+                      "Lotnisko : " +  pobranaBooking.getAirport() + " \n" +
+                      "Cena za lotnisko: " +  pobranaBooking.getAirportCurrentPrice()+ " \n" +
+                      "SPrzątanie : " +  pobranaBooking.getCleaning() + " \n" +
+                      "Cena za sprzątanie: " +  pobranaBooking.getCleaningCurrentPrice()+ " \n"               );
 
         /*List<Booking> bookings = db.getAllBookings();
 
