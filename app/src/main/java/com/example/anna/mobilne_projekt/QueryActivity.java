@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class QueryActivity extends AppCompatActivity {
+    Bundle bundle;
     EditText phoneEditText;
     EditText emailEditText;
     EditText arDateEditText;
@@ -23,9 +24,10 @@ public class QueryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        bundle = getIntent().getExtras();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query);
-        Bundle bundle = getIntent().getExtras();
+
 
         phoneEditText = (EditText) findViewById(R.id.phoneEditText);
         emailEditText = (EditText) findViewById(R.id.emailEditText);
@@ -115,6 +117,14 @@ public class QueryActivity extends AppCompatActivity {
             Toast.makeText(QueryActivity.this,
                     R.string.noEmailApp, Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    public void bookThisQuery(View view){
+        Intent intent = new Intent(this, BookingActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
 
     }
 

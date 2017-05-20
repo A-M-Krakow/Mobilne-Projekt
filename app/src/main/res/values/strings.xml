@@ -14,7 +14,6 @@
     <string name="cleaning">Sprzątanie: </string>
     <string name="days_number">Ilość dni: </string>
     <string name="download_Data">Pobierz dane</string>
-    <string name="Queries">Zapytania</string>
     <string name="days">Dni:</string>
     <string name="call">Zadzwoń</string>
     <string name="emailClient">Napisz wiadomość</string>
@@ -25,4 +24,7 @@
     <string name="noInternetConn">Brak połączenia z Internetem!</string>
     <string name="loadingData">Ładowanie danych...</string>
     <string name="makeBoking">Rezerwuj</string>
+    <string name="query">Zapytanie</string>
+    <string name="queries">Zapytania</string>
+    <string name="booking">Rezerwacja</string>
 </resources>
