@@ -27,4 +27,16 @@
     <string name="query">Zapytanie</string>
     <string name="queries">Zapytania</string>
     <string name="booking">Rezerwacja</string>
+    <string name="setPrices">Ustaw ceny</string>
+    <string name="adultPrice">Dorosly: </string>
+    <string name="pln">PLN</string>
+    <string name="babyPrice">Dziecko:  </string>
+    <string name="trainPrice">Transport z dworca PKP:</string>
+    <string name="airportPrice">Transport z lotniska:</string>
+    <string name="preference_file_key">priceList</string>
+    <string name="dogPrice">Pies: </string>
+    <string name="cleaningPrice">Sprzątanie: </string>
+    <string name="price">Cena: </string>
+    <string name="cena_ca_kowitatotalPrice">Cena całkowita:</string>
+    <string name="totalPrice">Cena całkowita:</string>
 </resources>

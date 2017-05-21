@@ -30,4 +30,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BookingsActivity.class);
         startActivity(intent);
     }
+
+    public void setPrices(View view)
+    {
+        Intent intent = new Intent(this, PricesActivity.class);
+        startActivity(intent);
+    }
 }

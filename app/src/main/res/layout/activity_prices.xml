@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/setPrices"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/adultPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/adultPrice"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+
+            <EditText
+                android:id="@+id/adultPriceEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pln"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/babyPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/babyPrice"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+
+            <EditText
+                android:id="@+id/babyPriceEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pln"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/dogPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dogPrice"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+
+            <EditText
+                android:id="@+id/dogPriceEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pln"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/trainPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/trainPrice"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+
+            <EditText
+                android:id="@+id/trainPriceEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pln"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/airportPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/airportPrice"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+
+            <EditText
+                android:id="@+id/airportPriceEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pln"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/cleaningPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cleaningPrice"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+
+            <EditText
+                android:id="@+id/cleaningPriceEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pln"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/setPricesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setPrices"
+            android:onClick="setPrices"/>
+
+
+    </LinearLayout>
+</ScrollView>

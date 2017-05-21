@@ -141,12 +141,28 @@
                 android:id="@+id/adultsEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:layout_margin="2dp"
                 />
+            <TextView
+                android:id="@+id/adultsPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/price"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+            <EditText
+                android:id="@+id/adultPriceEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
             <TextView
                 android:id="@+id/babiesTextView"
                 android:layout_width="wrap_content"
@@ -159,10 +175,20 @@
                 android:id="@+id/babiesEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
+                android:layout_margin="2dp"
+                />
+            <TextView
+                android:id="@+id/babiesPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/price"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+            <EditText
+                android:id="@+id/babiesPriceEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 />
         </LinearLayout>
@@ -187,9 +213,27 @@
                 android:clickable="false"
                 />
 
+            <TextView
+                android:id="@+id/trainPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/price"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+            <EditText
+                android:id="@+id/trainPriceEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                />
 
-
-
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
             <TextView
                 android:id="@+id/airportTextView"
                 android:layout_width="wrap_content"
@@ -203,6 +247,21 @@
                 android:layout_width="wrap_content"
                 android:clickable="false"
                 />
+
+                <TextView
+                    android:id="@+id/airportPriceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/price"
+                    android:textSize="18dp"
+                    android:layout_margin="2dp"
+                    />
+                <EditText
+                    android:id="@+id/airportPriceEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    />
         </LinearLayout>
 
         <LinearLayout
@@ -225,8 +284,27 @@
                 android:clickable="false"
                 />
 
+            <TextView
+                android:id="@+id/dogPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/price"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+            <EditText
+                android:id="@+id/dogPriceEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                />
 
-
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
 
             <TextView
                 android:id="@+id/cleaningTextView"
@@ -240,6 +318,21 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:clickable="false"
+                />
+
+            <TextView
+                android:id="@+id/cleaningPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/price"
+                android:textSize="18dp"
+                android:layout_margin="2dp"
+                />
+            <EditText
+                android:id="@+id/cleaningPriceEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
                 />
         </LinearLayout>
 
@@ -292,6 +385,18 @@
                 android:layout_margin="2dp"
                 />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/totalPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/totalPrice"
+            android:textSize="18dp"
+            android:layout_margin="2dp"
+            />
+
+
+
 
         <Button
             android:id="@+id/callButton"
