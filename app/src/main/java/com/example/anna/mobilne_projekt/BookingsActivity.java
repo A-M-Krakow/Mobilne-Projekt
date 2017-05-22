@@ -30,7 +30,7 @@ public class BookingsActivity extends AppCompatActivity {
         private String clientEmail;
         private int confirmed;
         private String arDate;
-        private int numberOfDays;
+        private String depDate;
         private int numberOfAdults;
         private Double adultsCurrentPrice = 0.00;
         private int numberOfBabies;
@@ -45,7 +45,7 @@ public class BookingsActivity extends AppCompatActivity {
         private Double cleaningCurrentPrice = 0.00;
 
 
-        public Booking(int bookingId, String clientName, String clientSurname, String clientPhone, String clientEmail, int confirmed, String arDate, int numberOfDays, int numberOfAdults, Double adultsCurrentPrice, int numberOfBabies, Double babiesCurrentPrice,  boolean dog, Double dogCurrentPrice,  boolean train, Double trainCurrentPrice,  boolean airport, Double airportCurrentPrice,  boolean cleaning, double cleaningCurrentPrice) {
+        public Booking(int bookingId, String clientName, String clientSurname, String clientPhone, String clientEmail, int confirmed, String arDate, String depDate, int numberOfAdults, Double adultsCurrentPrice, int numberOfBabies, Double babiesCurrentPrice,  boolean dog, Double dogCurrentPrice,  boolean train, Double trainCurrentPrice,  boolean airport, Double airportCurrentPrice,  boolean cleaning, double cleaningCurrentPrice) {
 
             this.bookingId = bookingId;
             this.clientName = clientName;
@@ -54,7 +54,7 @@ public class BookingsActivity extends AppCompatActivity {
             this.clientEmail = clientEmail;
             this.confirmed = confirmed;
             this.arDate = arDate;
-            this.numberOfDays = numberOfDays;
+            this.depDate = depDate;
             this.numberOfAdults = numberOfAdults;
             this.adultsCurrentPrice = adultsCurrentPrice;
             this.numberOfBabies = numberOfBabies;
@@ -113,8 +113,8 @@ public class BookingsActivity extends AppCompatActivity {
             this.arDate = newArDate;
         }
 
-        public void setNumberOfDays(int newNumberOfDays) {
-            this.numberOfDays = newNumberOfDays;
+        public void setDepDate(String newDepDate) {
+            this.depDate = newDepDate;
         }
 
         public void setNumberOfAdults (int newNumberOfAdults) {this.numberOfAdults = newNumberOfAdults;}
@@ -209,8 +209,8 @@ public class BookingsActivity extends AppCompatActivity {
             return arDate;
         }
 
-        public int getNumberOfDays() {
-            return numberOfDays;
+        public String getDepDate() {
+            return depDate;
         }
 
 
@@ -237,7 +237,7 @@ public class BookingsActivity extends AppCompatActivity {
         private static final String KEY_CLIENT_EMAIL = "ClientEmail";
         private static final String KEY_CONFIRMED = "Confirmed";
         private static final String KEY_AR_DATE = "ArDate";
-        private static final String KEY_NUMBER_DAYS = "NumberOfDays";
+        private static final String KEY_DEP_DATE= "DepDate";
 
         //nazwy kolumn tabeli accommodations
         private static final String KEY_ACC_NAME = "AccName";
@@ -282,7 +282,7 @@ public class BookingsActivity extends AppCompatActivity {
         public void onCreate(SQLiteDatabase db) {
             String CREATE_BOOKINGS_TABLE = "CREATE TABLE " + TABLE_BOOKINGS + "(" + KEY_BOOKING_ID + " INTEGER PRIMARY KEY, " +
                     KEY_CLIENT_NAME + " TEXT, " + KEY_CLIENT_SURNAME + " TEXT,  " + KEY_CLIENT_PHONE + " TEXT, " + KEY_CLIENT_EMAIL + " TEXT, " +
-                    KEY_CONFIRMED + " INTEGER, " + KEY_AR_DATE + " DATETIME," + KEY_NUMBER_DAYS + " INTEGER)";
+                    KEY_CONFIRMED + " INTEGER, " + KEY_AR_DATE + " TEXT," + KEY_DEP_DATE + " TEXT)";
 
            String CREATE_ACCOMODATIONS_TABLE = "CREATE TABLE " + TABLE_ACCOMODATIONS + "(" + KEY_ACC_NAME + " TEXT PRIMARY KEY," + KEY_ACC_PRICE + " REAL)";
 
@@ -363,7 +363,7 @@ public class BookingsActivity extends AppCompatActivity {
        booking.setClientEmail(cursor.getString(4));
        booking.setConfirmation(Integer.parseInt(cursor.getString(5)));
        booking.setArDate(cursor.getString(6));
-       booking.setNumberOfDays(Integer.parseInt(cursor.getString(7)));
+       booking.setDepDate(cursor.getString(7));
 
        // Pobieranie z bazy ilości i ceny dorosłych dla rezerwacji o podanym Id
        String selectAdultBookingQuery = "select "+  KEY_NUMBER_OF_ACCOMODATIONS + ", " + KEY_CURR_PRICE +  " from " + TABLE_BOOKING_ACCOMODATIONS + " where " + KEY_BOOKING_ID + " = " + id + " and " +  KEY_ACC_NAME + " = " + "\"" + ADULT_ACCOMODATION + "\"";
@@ -438,7 +438,7 @@ public class BookingsActivity extends AppCompatActivity {
                 booking.setClientPhone(cursor.getString(4));
                 booking.setConfirmation(Integer.parseInt(cursor.getString(5)));
                 booking.setArDate(cursor.getString(6));
-                booking.setNumberOfDays(Integer.parseInt(cursor.getString(7)));
+                booking.setDepDate(cursor.getString(7));
 
                 bookingList.add(booking);
 
@@ -456,7 +456,7 @@ public class BookingsActivity extends AppCompatActivity {
         values.put(KEY_CLIENT_PHONE, booking.getClientPhone());
         values.put(KEY_CONFIRMED, booking.getConfirmed());
         values.put(KEY_AR_DATE, booking.getArDate());
-        values.put(KEY_NUMBER_DAYS, booking.getNumberOfDays());
+        values.put(KEY_DEP_DATE, booking.getDepDate());
 
         //Aktualizacja wiersza
         return db.update(TABLE_BOOKINGS, values, KEY_BOOKING_ID + " =? ", new String[] {String.valueOf(booking.getBookingId())});
@@ -476,7 +476,7 @@ public class BookingsActivity extends AppCompatActivity {
         bookingValues.put(KEY_CLIENT_PHONE, booking.getClientPhone());
         bookingValues.put(KEY_CLIENT_EMAIL, booking.getClientEmail());
         bookingValues.put(KEY_AR_DATE, booking.getArDate());
-        bookingValues.put(KEY_NUMBER_DAYS, booking.getNumberOfDays());
+        bookingValues.put(KEY_DEP_DATE, booking.getDepDate());
         bookingValues.put(KEY_CONFIRMED, booking.getConfirmed());
 
         db.insert(TABLE_BOOKINGS, null, bookingValues);
@@ -552,9 +552,9 @@ public class BookingsActivity extends AppCompatActivity {
            // int bookingId, String clientName, String clientSurname, String clientPhone, String clientEmail, int confirmed, String arDate, int numberOfDays, int numberOfAdults, Double adultsCurrentPrice, int numberOfBabies, Double babiesCurrentPrice,  boolean dog, Double dogCurrentPrice,  boolean train, Double trainCurrentPrice,  boolean airport, Double airportCurrentPrice,  boolean cleaning, double cleaningCurrentPrice)
 
             int bookindId = 1;
-      db.addBooking( new Booking(bookindId, "Anna", "Madej", "122222222", "sd@sd.pl", 1, "2017-01-30", 15, 3, 50.00, 0, 20.00, true, 10.00, false, 25.00, true, 35.00,  false, 30.00));
+      db.addBooking( new Booking(bookindId, "Anna", "Madej", "122222222", "sd@sd.pl", 1, "2017-01-30", "2017-01-31", 3, 50.00, 0, 20.00, true, 10.00, false, 25.00, true, 35.00,  false, 30.00));
       bookindId++;
-      db.addBooking( new Booking(bookindId, "Anna", "Madej", "122222222", "sd@sd.pl", 1, "2017-01-30", 15, 3, 40.00, 1, 20.00, false, 12.00, false, 25.00, true, 35.00,  false, 30.00));
+      db.addBooking( new Booking(bookindId, "Anna", "Madej", "122222222", "sd@sd.pl", 1, "2017-01-30", "2017-01-31", 3, 40.00, 1, 20.00, false, 12.00, false, 25.00, true, 35.00,  false, 30.00));
 
 
       Booking pobranaBooking = db.getBooking(1);
@@ -567,7 +567,7 @@ public class BookingsActivity extends AppCompatActivity {
               "Email: " + pobranaBooking.getClientEmail() + " \n " +
               "Potwierdzona: " + pobranaBooking.getConfirmed() + " \n " +
                "Data przyjazdu: " +  pobranaBooking.getArDate() + " | " +
-               "Ilosc dni: " + pobranaBooking.getNumberOfDays() + " \n " +
+                      "Data wyjazdu: " +  pobranaBooking.getDepDate() + " | " +
               "Ilosc Dorosłych: " +  pobranaBooking.getNumberOfAdults() + " \n " +
               "Cena za dorosłego: " +  pobranaBooking.getAdultsCurrentPrice() + " \n " +
               "Ilosc Dzieci: " +  pobranaBooking.getNumberOfBabies() + " \n" +

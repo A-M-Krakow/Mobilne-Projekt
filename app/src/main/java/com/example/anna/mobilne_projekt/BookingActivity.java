@@ -14,7 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -36,11 +38,10 @@ public class BookingActivity extends AppCompatActivity {
     EditText daysEditText;
     EditText adultsEditText;
     EditText babiesEditText;
-    Boolean dogBool;
-    Boolean trainBool;
-    Boolean airportBool;
-    Boolean cleaningBool;
-
+    CheckBox dogCheckBox;
+    CheckBox trainCheckBox;
+    CheckBox airportCheckBox;
+    CheckBox cleaningCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +50,12 @@ public class BookingActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         context = this;
         sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
          adultPriceEditText = (EditText) findViewById(R.id.adultPriceEditText);
          babiesPriceEditText = (EditText) findViewById(R.id.babiesPriceEditText);
         trainPriceEditText = (EditText) findViewById(R.id.trainPriceEditText);
         airportPriceEditText = (EditText) findViewById(R.id.airportPriceEditText);
         dogPriceEditText = (EditText) findViewById(R.id.dogPriceEditText);
         cleaningPriceEditText = (EditText) findViewById(R.id.cleaningPriceEditText);
-
-
-
 
 
         EditText nameEditText = (EditText) findViewById(R.id.nameEditText);
@@ -76,10 +73,10 @@ public class BookingActivity extends AppCompatActivity {
         babiesEditText = (EditText) findViewById(R.id.babiesEditText);
 
 
-        CheckBox dogCheckBox = (CheckBox) findViewById(R.id.dogCheckBox);
-        CheckBox trainCheckBox = (CheckBox) findViewById(R.id.trainCheckBox);
-        CheckBox cleaningCheckBox = (CheckBox) findViewById(R.id.cleaningCheckBox);
-        CheckBox airportCheckBox = (CheckBox) findViewById(R.id.airportCheckBox);
+        dogCheckBox = (CheckBox) findViewById(R.id.dogCheckBox);
+        trainCheckBox = (CheckBox) findViewById(R.id.trainCheckBox);
+        cleaningCheckBox = (CheckBox) findViewById(R.id.cleaningCheckBox);
+        airportCheckBox = (CheckBox) findViewById(R.id.airportCheckBox);
         Intent intent = getIntent();
 
 
@@ -87,10 +84,10 @@ public class BookingActivity extends AppCompatActivity {
         surnameEditText.setText(bundle.getString("surname"));
 
 
-        dogBool = (!bundle.getString("dog").equals("0")) ? true : false;
-        trainBool = (!bundle.getString("train").equals("0")) ? true : false;
-        airportBool = (!bundle.getString("airport").equals("0")) ? true : false;
-        cleaningBool = (!bundle.getString("cleaning").equals("0")) ? true : false;
+        Boolean dogBool = (!bundle.getString("dog").equals("0")) ? true : false;
+        Boolean trainBool = (!bundle.getString("train").equals("0")) ? true : false;
+        Boolean airportBool = (!bundle.getString("airport").equals("0")) ? true : false;
+        Boolean cleaningBool = (!bundle.getString("cleaning").equals("0")) ? true : false;
 
 
         dogCheckBox.setChecked(dogBool);
@@ -100,7 +97,7 @@ public class BookingActivity extends AppCompatActivity {
 
         arDateEditText.setText(bundle.getString("ar_date"));
         depDateEditText.setText(bundle.getString("dep_date"));
-        daysEditText.setText(bundle.getString("days"));
+
         adultsEditText.setText(bundle.getString("adults"));
         adultPriceEditText.setText(sharedPref.getString(getString(R.string.adultPrice), "50"));
         babiesPriceEditText.setText(sharedPref.getString(getString(R.string.babyPrice), "55"));
@@ -109,12 +106,15 @@ public class BookingActivity extends AppCompatActivity {
         dogPriceEditText.setText(sharedPref.getString(getString(R.string.dogPrice), "15"));
         cleaningPriceEditText.setText(sharedPref.getString(getString(R.string.cleaningPrice), "15"));
         babiesEditText.setText(bundle.getString("babies"));
-
         emailEditText.setText(bundle.getString("email"));
         phoneEditText.setText(bundle.getString("phone"));
-
         countPrices(null);
+
+
+
     }
+
+
 
     public void callClient(View view) {
 
@@ -132,28 +132,6 @@ public class BookingActivity extends AppCompatActivity {
 
         intent.putExtra(Intent.EXTRA_EMAIL, email);
         intent.putExtra(Intent.EXTRA_SUBJECT, "Rezerwacja mieszkania w Krakowie od: " + arDateEditText.getText().toString() + " do: " + depDateEditText.getText().toString());
-        String messageText =  "W związku z przesłanym zapytaniem o dostępność mieszkania w Krakowie w terminie  od: "
-                + arDateEditText.getText().toString() + " do: " + depDateEditText.getText().toString() + " informuję, że ";
-
-
-        switch(view.getId())
-        {
-            case R.id.emailButtonYes:
-                messageText+=" w tym przedziale czasowym mieszkanie jest dostępne.  W celu dokonania rezerwacji, proszę o kontakt telefoniczny na numer: +48884680129.";
-                break;
-            case R.id.emailButtonNo:
-                messageText+=" w tym przedziale czasowym nie ma możliwoście rezerwacji.";
-                break;
-            default:
-                throw new RuntimeException("Unknow button ID");
-        }
-
-        messageText+=" Z poważaniem, Anna Madej.";
-
-        intent.putExtra(Intent.EXTRA_TEXT,
-                messageText);
-
-
         try {
             startActivity(Intent.createChooser(intent, getString(R.string.choosseEmaiClient)));
             finish();
@@ -165,8 +143,27 @@ public class BookingActivity extends AppCompatActivity {
     }
 
     public void countPrices(View view){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String arDate = arDateEditText.getText().toString();
+        Date arrivalDate = new Date();
+        try {
+            arrivalDate = dateFormat.parse(arDate);
+        } catch (ParseException e) {
 
+            e.printStackTrace();
+        }
 
+        String depDate = depDateEditText.getText().toString();
+        Date departueDate = new Date();
+        try {
+            departueDate = dateFormat.parse(depDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long diff = (departueDate.getTime()-arrivalDate.getTime());
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+        Log.i("dddddddd",String.valueOf(diffDays));
+        daysEditText.setText(String.valueOf(diffDays));
 
         BigDecimal adultPrice = new BigDecimal(adultPriceEditText.getText().toString());
         BigDecimal babyPrice = new BigDecimal(babiesPriceEditText.getText().toString());
@@ -181,13 +178,13 @@ public class BookingActivity extends AppCompatActivity {
         BigDecimal adultAmount = adultPrice.multiply(numberOfDays.multiply(numberOfAdults));
         BigDecimal babiesAmount = babyPrice.multiply(numberOfDays.multiply(numberOfBabies));
         BigDecimal dogAmount = new BigDecimal (0.00);
-        if (dogBool)  dogAmount = dogPrice.multiply(numberOfDays);
+        if (dogCheckBox.isChecked())  dogAmount = dogPrice.multiply(numberOfDays);
         BigDecimal trainAmount = new BigDecimal (0.00);
-        if (trainBool)  trainAmount = trainPrice;
+        if (trainCheckBox.isChecked())  trainAmount = trainPrice;
         BigDecimal airportAmount = new BigDecimal (0.00);
-        if (airportBool)  airportAmount = airportPrice;
+        if (airportCheckBox.isChecked())  airportAmount = airportPrice;
         BigDecimal cleaningAmount = new BigDecimal (0.00);
-        if (cleaningBool)  cleaningAmount = cleaningPrice;
+        if (cleaningCheckBox.isChecked())  cleaningAmount = cleaningPrice;
         BigDecimal totalprice = adultAmount.add(babiesAmount.add(dogAmount.add(trainAmount.add(airportAmount.add(cleaningAmount)))));
 
 
@@ -212,4 +209,14 @@ public class BookingActivity extends AppCompatActivity {
 
     }
 
+    private void makeBooking(View view)
+    {
+
+    }
+
+
+
 }
+
+
+
