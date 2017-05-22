@@ -70,6 +70,7 @@ public class QueryActivity extends AppCompatActivity {
         babiesEditText.setText(bundle.getString("babies"));
         emailEditText.setText(bundle.getString("email"));
         phoneEditText.setText(bundle.getString("phone"));
+
     }
 
     public void callClient(View view) {

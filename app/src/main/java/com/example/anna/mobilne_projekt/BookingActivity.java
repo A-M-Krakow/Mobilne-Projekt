@@ -4,14 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class BookingActivity extends AppCompatActivity {
     Context context;
@@ -22,6 +27,20 @@ public class BookingActivity extends AppCompatActivity {
     EditText emailEditText;
     EditText arDateEditText;
     EditText depDateEditText;
+    EditText adultPriceEditText;
+    EditText babiesPriceEditText;
+    EditText trainPriceEditText;
+    EditText airportPriceEditText;
+    EditText dogPriceEditText;
+    EditText cleaningPriceEditText;
+    EditText daysEditText;
+    EditText adultsEditText;
+    EditText babiesEditText;
+    Boolean dogBool;
+    Boolean trainBool;
+    Boolean airportBool;
+    Boolean cleaningBool;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +50,13 @@ public class BookingActivity extends AppCompatActivity {
         context = this;
         sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
-        EditText adultPriceEditText = (EditText) findViewById(R.id.adultPriceEditText);
-        EditText babiesPriceEditText = (EditText) findViewById(R.id.babiesPriceEditText);
-        EditText trainPriceEditText = (EditText) findViewById(R.id.trainPriceEditText);
-        EditText airportPriceEditText = (EditText) findViewById(R.id.airportPriceEditText);
-        EditText dogPriceEditText = (EditText) findViewById(R.id.dogPriceEditText);
-        EditText cleaningPriceEditText = (EditText) findViewById(R.id.cleaningPriceEditText);
+         adultPriceEditText = (EditText) findViewById(R.id.adultPriceEditText);
+         babiesPriceEditText = (EditText) findViewById(R.id.babiesPriceEditText);
+        trainPriceEditText = (EditText) findViewById(R.id.trainPriceEditText);
+        airportPriceEditText = (EditText) findViewById(R.id.airportPriceEditText);
+        dogPriceEditText = (EditText) findViewById(R.id.dogPriceEditText);
+        cleaningPriceEditText = (EditText) findViewById(R.id.cleaningPriceEditText);
+
 
 
 
@@ -51,10 +71,9 @@ public class BookingActivity extends AppCompatActivity {
 
         EditText surnameEditText = (EditText) findViewById(R.id.surnameEditText);
 
-
-        EditText daysEditText = (EditText) findViewById(R.id.daysEditText);
-        EditText adultsEditText = (EditText) findViewById(R.id.adultsEditText);
-        EditText babiesEditText = (EditText) findViewById(R.id.babiesEditText);
+        daysEditText = (EditText) findViewById(R.id.daysEditText);
+        adultsEditText = (EditText) findViewById(R.id.adultsEditText);
+        babiesEditText = (EditText) findViewById(R.id.babiesEditText);
 
 
         CheckBox dogCheckBox = (CheckBox) findViewById(R.id.dogCheckBox);
@@ -68,10 +87,10 @@ public class BookingActivity extends AppCompatActivity {
         surnameEditText.setText(bundle.getString("surname"));
 
 
-        Boolean dogBool = (!bundle.getString("dog").equals("0")) ? true : false;
-        Boolean trainBool = (!bundle.getString("train").equals("0")) ? true : false;
-        Boolean airportBool = (!bundle.getString("airport").equals("0")) ? true : false;
-        Boolean cleaningBool = (!bundle.getString("cleaning").equals("0")) ? true : false;
+        dogBool = (!bundle.getString("dog").equals("0")) ? true : false;
+        trainBool = (!bundle.getString("train").equals("0")) ? true : false;
+        airportBool = (!bundle.getString("airport").equals("0")) ? true : false;
+        cleaningBool = (!bundle.getString("cleaning").equals("0")) ? true : false;
 
 
         dogCheckBox.setChecked(dogBool);
@@ -90,28 +109,11 @@ public class BookingActivity extends AppCompatActivity {
         dogPriceEditText.setText(sharedPref.getString(getString(R.string.dogPrice), "15"));
         cleaningPriceEditText.setText(sharedPref.getString(getString(R.string.cleaningPrice), "15"));
         babiesEditText.setText(bundle.getString("babies"));
-         BigDecimal adultPrice = new BigDecimal(adultPriceEditText.getText().toString());
-
-       BigDecimal babyPrice = new BigDecimal(babiesPriceEditText.getText().toString());
-       BigDecimal dogPrice = new BigDecimal(dogPriceEditText.getText().toString());
-       BigDecimal trainPrice = new BigDecimal(trainPriceEditText.getText().toString());
-       BigDecimal airportPrice = new BigDecimal(airportPriceEditText.getText().toString());
-       BigDecimal cleaningPrice = new BigDecimal(cleaningPriceEditText.getText().toString());
-       BigDecimal numberOfAdults = new BigDecimal(adultsEditText.getText().toString());
-        BigDecimal numberOfBabies = new BigDecimal(babiesEditText.getText().toString());
-      BigDecimal numberOfDays = new BigDecimal(daysEditText.getText().toString());
-
-        BigDecimal adultAmount = adultPrice.multiply(numberOfDays.multiply(numberOfAdults));
-       BigDecimal babiesAmount = babyPrice.multiply(numberOfDays.multiply(numberOfBabies));
-        BigDecimal dogAmount = dogPrice.multiply(numberOfDays);
-        BigDecimal totalprice = adultAmount.add(babiesAmount.add(dogAmount.add(trainPrice.add(airportPrice.add(cleaningPrice)))));
-
-      TextView totalPriceTextView = (TextView) findViewById(R.id.totalPriceTextView);
-        totalPriceTextView.setText(String.valueOf(totalprice));
-
 
         emailEditText.setText(bundle.getString("email"));
         phoneEditText.setText(bundle.getString("phone"));
+
+        countPrices(null);
     }
 
     public void callClient(View view) {
@@ -158,6 +160,54 @@ public class BookingActivity extends AppCompatActivity {
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(BookingActivity.this,
                     R.string.noEmailApp, Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public void countPrices(View view){
+
+
+
+        BigDecimal adultPrice = new BigDecimal(adultPriceEditText.getText().toString());
+        BigDecimal babyPrice = new BigDecimal(babiesPriceEditText.getText().toString());
+        BigDecimal dogPrice = new BigDecimal(dogPriceEditText.getText().toString());
+        BigDecimal trainPrice = new BigDecimal(trainPriceEditText.getText().toString());
+        BigDecimal airportPrice = new BigDecimal(airportPriceEditText.getText().toString());
+        BigDecimal cleaningPrice = new BigDecimal(cleaningPriceEditText.getText().toString());
+        BigDecimal numberOfAdults = new BigDecimal(adultsEditText.getText().toString());
+        BigDecimal numberOfBabies = new BigDecimal(babiesEditText.getText().toString());
+        BigDecimal numberOfDays = new BigDecimal(daysEditText.getText().toString());
+
+        BigDecimal adultAmount = adultPrice.multiply(numberOfDays.multiply(numberOfAdults));
+        BigDecimal babiesAmount = babyPrice.multiply(numberOfDays.multiply(numberOfBabies));
+        BigDecimal dogAmount = new BigDecimal (0.00);
+        if (dogBool)  dogAmount = dogPrice.multiply(numberOfDays);
+        BigDecimal trainAmount = new BigDecimal (0.00);
+        if (trainBool)  trainAmount = trainPrice;
+        BigDecimal airportAmount = new BigDecimal (0.00);
+        if (airportBool)  airportAmount = airportPrice;
+        BigDecimal cleaningAmount = new BigDecimal (0.00);
+        if (cleaningBool)  cleaningAmount = cleaningPrice;
+        BigDecimal totalprice = adultAmount.add(babiesAmount.add(dogAmount.add(trainAmount.add(airportAmount.add(cleaningAmount)))));
+
+
+        TextView totalPriceTextView = (TextView) findViewById(R.id.totalPriceTextView);
+        totalPriceTextView.setText(String.valueOf(totalprice));
+
+    }
+
+
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        int id = v.getId();
+        if (id == R.id.arDateChangeButton) {
+            DatePickerFragment.setFlag(DatePickerFragment.FLAG_START_DATE);
+            newFragment.show(getSupportFragmentManager(), "datePicker");
+
+        } else if (id == R.id.depDateChangeButton) {
+            DatePickerFragment.setFlag(DatePickerFragment.FLAG_END_DATE);
+            newFragment.show(getSupportFragmentManager(), "datePicker");
+
         }
 
     }

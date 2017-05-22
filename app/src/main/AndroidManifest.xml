@@ -25,7 +25,8 @@
         <activity android:name=".QueryActivity" />
         <activity android:name=".BookingsActivity" />
         <activity android:name=".BookingActivity" />
-        <activity android:name=".PricesActivity"></activity>
+        <activity android:name=".PricesActivity" />
+        <activity android:name=".DatePickerFragment"></activity>
     </application>
 
 </manifest>

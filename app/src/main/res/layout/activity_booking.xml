@@ -7,6 +7,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,10 +32,6 @@
                 android:id="@+id/nameEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:layout_margin="2dp"
                 />
         </LinearLayout>
@@ -55,10 +53,6 @@
                 android:id="@+id/surnameEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:layout_margin="2dp"
                 />
         </LinearLayout>
@@ -76,16 +70,28 @@
                 android:textSize="18dp"
                 android:layout_margin="2dp"
                 />
+
+                />
             <EditText
                 android:id="@+id/arDateEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:layout_margin="2dp"
                 />
+            <Button
+                android:id="@+id/arDateChangeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/change"
+                android:onClick="showDatePickerDialog" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+
             <TextView
                 android:id="@+id/depDateTextView"
                 android:layout_width="wrap_content"
@@ -93,17 +99,20 @@
                 android:text="@string/departue_date"
                 android:textSize="18dp"
                 android:layout_margin="2dp"
+
                 />
             <EditText
                 android:id="@+id/depDateEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
+                android:inputType="date"
                 android:layout_margin="2dp"
-                />
+                /> <Button
+            android:id="@+id/depDateChangeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"
+            android:onClick="showDatePickerDialog" />
             <TextView
                 android:id="@+id/daysTextView"
                 android:layout_width="wrap_content"
@@ -116,11 +125,8 @@
                 android:id="@+id/daysEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:layout_margin="2dp"
+                android:inputType="number"
                 />
         </LinearLayout>
 
@@ -142,6 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:inputType="number"
                 />
             <TextView
                 android:id="@+id/adultsPriceTextView"
@@ -156,6 +163,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:inputType="numberDecimal"
                 />
         </LinearLayout>
         <LinearLayout
@@ -176,6 +184,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:inputType="number"
                 />
             <TextView
                 android:id="@+id/babiesPriceTextView"
@@ -190,6 +199,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:inputType="numberDecimal"
                 />
         </LinearLayout>
 
@@ -210,7 +220,7 @@
             <CheckBox android:id="@+id/trainCheckBox"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:clickable="false"
+                android:clickable="true"
                 />
 
             <TextView
@@ -226,6 +236,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:inputType="numberDecimal"
                 />
 
         </LinearLayout>
@@ -245,7 +256,7 @@
             <CheckBox android:id="@+id/airportCheckBox"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:clickable="false"
+                android:clickable="true"
                 />
 
                 <TextView
@@ -261,6 +272,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
+                    android:inputType="numberDecimal"
                     />
         </LinearLayout>
 
@@ -281,7 +293,7 @@
             <CheckBox android:id="@+id/dogCheckBox"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:clickable="false"
+                android:clickable="true"
                 />
 
             <TextView
@@ -297,6 +309,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:inputType="numberDecimal"
                 />
 
         </LinearLayout>
@@ -317,7 +330,7 @@
             <CheckBox android:id="@+id/cleaningCheckBox"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:clickable="false"
+                android:clickable="true"
                 />
 
             <TextView
@@ -333,6 +346,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:inputType="numberDecimal"
                 />
         </LinearLayout>
 
@@ -353,10 +367,6 @@
                 android:id="@+id/emailEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:layout_margin="2dp"
                 />
         </LinearLayout>
@@ -378,16 +388,18 @@
                 android:id="@+id/phoneEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:layout_margin="2dp"
+                android:inputType="phone"
                 />
         </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
         <TextView
-            android:id="@+id/totalPriceTextView"
+            android:id="@+id/totalPriceLabelTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/totalPrice"
@@ -395,7 +407,22 @@
             android:layout_margin="2dp"
             />
 
+        <TextView
+            android:id="@+id/totalPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:layout_margin="2dp"
+            />
 
+    </LinearLayout>
+
+        <Button
+            android:id="@+id/countButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/countPrices"
+            android:onClick="countPrices"/>
 
 
         <Button
