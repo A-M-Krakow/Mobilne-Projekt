@@ -46,4 +46,5 @@
     <string name="change">Zmień</string>
     <string name="SendMessage">Napisz wiadomość</string>
     <string name="showBookings">Pokaż rezerwacje</string>
+    <string name="Bookings">Rezerwacje:</string>
 </resources>

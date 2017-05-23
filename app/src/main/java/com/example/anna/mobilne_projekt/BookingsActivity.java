@@ -1,5 +1,6 @@
 package com.example.anna.mobilne_projekt;
 
+import android.app.ListActivity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -11,13 +12,26 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListAdapter;
+import android.widget.SimpleAdapter;
+
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
-public class BookingsActivity extends AppCompatActivity {
+public class BookingsActivity extends ListActivity {
+    private final String KEY_CLIENT = "klient";
+    private final String KEY_QUERY = "zapytanie";
+    private final String KEY_DESCRIPTION = "opis";
 
+    private final String KEY_ID = "IdZapytania";
+    private final String KEY_NAME = "ImieKlienta";
+    private final String KEY_SURNAME = "NazwiskoKlienta";
+    private final String KEY_EMAIL = "emailKlienta";
+    private final String KEY_PHONE = "telefonKlienta";
 
     public class Booking {
         private String clientName;
@@ -438,33 +452,6 @@ public class BookingsActivity extends AppCompatActivity {
             return booking;
         }
 
-        public List<Booking> getAllBookings() {
-            List<Booking> bookingList = new ArrayList<Booking>();
-
-            //zapytanie SQL
-            String selectQuery = "SELECT * FROM " + TABLE_BOOKINGS;
-
-            Cursor cursor = db.rawQuery(selectQuery, null);
-
-            //pętla przez wszystkie elementy z dodaniem ich do listy
-            if (cursor.moveToFirst()) {
-                do {
-                    Booking booking = new Booking();
-                    booking.setClientName(cursor.getString(1));
-                    booking.setClientSurname(cursor.getString(2));
-                    booking.setClientEmail(cursor.getString(3));
-                    booking.setClientPhone(cursor.getString(4));
-                    booking.setConfirmation(Integer.parseInt(cursor.getString(5)));
-                    booking.setArDate(cursor.getString(6));
-                    booking.setDepDate(cursor.getString(7));
-
-                    bookingList.add(booking);
-
-                } while (cursor.moveToNext());
-            }
-            return bookingList;
-        }
-
         //aktualizacja rezerwacji
   /*  public int updateBooking(Booking booking) {
         ContentValues values = new ContentValues();
@@ -557,6 +544,26 @@ public class BookingsActivity extends AppCompatActivity {
 
         }
 
+        public ArrayList<HashMap<String, String>> showAllBookings() {
+            List<Booking> bookingList = new ArrayList<Booking>();
+
+            String selectQuery = "Select * from " + TABLE_BOOKINGS + " order by " + KEY_AR_DATE + " desc";
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            ArrayList<HashMap<String, String>> menuItems = new ArrayList<HashMap<String, String>>();
+
+            //pętla przez wszystkie elementy
+            if (cursor.moveToFirst()) {
+                do {
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put(KEY_QUERY, "od: " + cursor.getString(6) + " do: " + cursor.getString(7) + " (" +cursor.getString(2) + ")");
+                    map.put(KEY_ID, String.valueOf(cursor.getInt(0)));
+                    menuItems.add(map);
+
+                } while (cursor.moveToNext());
+            }
+            return menuItems;
+
+        }
     }
 
 
@@ -573,6 +580,9 @@ public class BookingsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle;
         bundle = getIntent().getExtras();
+
+        ListAdapter adapter = new SimpleAdapter(BookingsActivity.this, db.showAllBookings(), R.layout.list_item, new String[]{KEY_QUERY, KEY_ID}, new int[]{R.id.queryTextViev, R.id.queryId});
+        BookingsActivity.this.setListAdapter(adapter);
 
         if (bundle != null) {
 
@@ -598,8 +608,8 @@ public class BookingsActivity extends AppCompatActivity {
             );
 
             db.addBooking(booking);
-
-
         }
     }
+
+
 }
