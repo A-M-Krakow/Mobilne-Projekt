@@ -52,11 +52,11 @@ public  class DatePickerFragment extends DialogFragment
             view.getId();
             String monthString = String.valueOf(month);
             if (monthString.length()<2) monthString = "0" + monthString;
-
             String dayString = String.valueOf(day);
             if (dayString.length()<2) dayString = "0" + dayString;
 
             editText.setText(year + "-" + monthString + "-" + dayString);
+            ((BookingActivity)getActivity()).countPrices(null);
 
 
         }

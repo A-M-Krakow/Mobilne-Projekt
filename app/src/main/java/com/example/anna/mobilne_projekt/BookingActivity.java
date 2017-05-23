@@ -16,7 +16,6 @@ import android.widget.Toast;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 
@@ -54,6 +53,7 @@ public class BookingActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         context = this;
         sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
         adultPriceEditText = (EditText) findViewById(R.id.adultPriceEditText);
         babiesPriceEditText = (EditText) findViewById(R.id.babiesPriceEditText);
         trainPriceEditText = (EditText) findViewById(R.id.trainPriceEditText);
@@ -73,36 +73,65 @@ public class BookingActivity extends AppCompatActivity {
         trainCheckBox = (CheckBox) findViewById(R.id.trainCheckBox);
         cleaningCheckBox = (CheckBox) findViewById(R.id.cleaningCheckBox);
         airportCheckBox = (CheckBox) findViewById(R.id.airportCheckBox);
+        View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener () {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    countPrices(null);
+                }
+            }};
+
+        adultPriceEditText.setOnFocusChangeListener(onFocusChangeListener);
+        babiesPriceEditText.setOnFocusChangeListener(onFocusChangeListener);
+        trainPriceEditText.setOnFocusChangeListener(onFocusChangeListener);
+        airportPriceEditText.setOnFocusChangeListener(onFocusChangeListener);
+        dogPriceEditText.setOnFocusChangeListener(onFocusChangeListener);
+        cleaningPriceEditText.setOnFocusChangeListener(onFocusChangeListener);
+        arDateEditText.setOnFocusChangeListener(onFocusChangeListener);
+        depDateEditText.setOnFocusChangeListener(onFocusChangeListener);
+        adultsEditText.setOnFocusChangeListener(onFocusChangeListener);
+        babiesEditText.setOnFocusChangeListener(onFocusChangeListener);
 
         Intent intent = getIntent();
+
+
         nameEditText.setText(bundle.getString("name"));
         surnameEditText.setText(bundle.getString("surname"));
-
-
         Boolean dogBool = (!bundle.getString("dog").equals("0")) ? true : false;
         Boolean trainBool = (!bundle.getString("train").equals("0")) ? true : false;
         Boolean airportBool = (!bundle.getString("airport").equals("0")) ? true : false;
         Boolean cleaningBool = (!bundle.getString("cleaning").equals("0")) ? true : false;
 
-
         dogCheckBox.setChecked(dogBool);
         trainCheckBox.setChecked(trainBool);
         airportCheckBox.setChecked(airportBool);
         cleaningCheckBox.setChecked(cleaningBool);
-
         arDateEditText.setText(bundle.getString("ar_date"));
         depDateEditText.setText(bundle.getString("dep_date"));
-
         adultsEditText.setText(bundle.getString("adults"));
-        adultPriceEditText.setText(sharedPref.getString(getString(R.string.adultPrice), "50"));
-        babiesPriceEditText.setText(sharedPref.getString(getString(R.string.babyPrice), "55"));
-        trainPriceEditText.setText(sharedPref.getString(getString(R.string.trainPrice), "30"));
-        airportPriceEditText.setText(sharedPref.getString(getString(R.string.airportPrice), "40"));
-        dogPriceEditText.setText(sharedPref.getString(getString(R.string.dogPrice), "15"));
-        cleaningPriceEditText.setText(sharedPref.getString(getString(R.string.cleaningPrice), "15"));
         babiesEditText.setText(bundle.getString("babies"));
         emailEditText.setText(bundle.getString("email"));
         phoneEditText.setText(bundle.getString("phone"));
+
+        if(bundle.containsKey("BookingId")) {
+            adultPriceEditText.setText(bundle.getString("adultsPrice"));
+            babiesPriceEditText.setText(bundle.getString("babiesPrice"));
+            trainPriceEditText.setText(bundle.getString("trainPrice"));
+            airportPriceEditText.setText(bundle.getString("airportPrice"));
+            dogPriceEditText.setText(bundle.getString("dogPrice"));
+            cleaningPriceEditText.setText(bundle.getString("cleaningPrice"));
+        }
+        else
+        {
+            adultPriceEditText.setText(sharedPref.getString(getString(R.string.adultPrice), "0"));
+            babiesPriceEditText.setText(sharedPref.getString(getString(R.string.babyPrice), "0"));
+            trainPriceEditText.setText(sharedPref.getString(getString(R.string.trainPrice), "0"));
+            airportPriceEditText.setText(sharedPref.getString(getString(R.string.airportPrice), "0"));
+            dogPriceEditText.setText(sharedPref.getString(getString(R.string.dogPrice), "0"));
+            cleaningPriceEditText.setText(sharedPref.getString(getString(R.string.cleaningPrice), "0"));
+        }
+
+
+
         countPrices(null);
 
 
@@ -157,7 +186,6 @@ public class BookingActivity extends AppCompatActivity {
         }
         long diff = (departueDate.getTime()-arrivalDate.getTime());
         long diffDays = diff / (24 * 60 * 60 * 1000);
-        Log.i("dddddddd",String.valueOf(diffDays));
         daysEditText.setText(String.valueOf(diffDays));
 
         BigDecimal adultPrice = new BigDecimal(adultPriceEditText.getText().toString());

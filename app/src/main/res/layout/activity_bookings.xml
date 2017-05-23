@@ -11,10 +11,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:text="@string/Bookings"/>
-
-
-
-
+    
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"

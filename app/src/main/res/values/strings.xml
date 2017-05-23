@@ -47,4 +47,5 @@
     <string name="SendMessage">Napisz wiadomość</string>
     <string name="showBookings">Pokaż rezerwacje</string>
     <string name="Bookings">Rezerwacje:</string>
+    <string name="save">Zapisz</string>
 </resources>

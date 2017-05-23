@@ -12,8 +12,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import org.w3c.dom.Element;
 
@@ -23,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class BookingsActivity extends ListActivity {
+    DatabaseHandler db;
     private final String KEY_CLIENT = "klient";
     private final String KEY_QUERY = "zapytanie";
     private final String KEY_DESCRIPTION = "opis";
@@ -546,7 +550,6 @@ public class BookingsActivity extends ListActivity {
 
         public ArrayList<HashMap<String, String>> showAllBookings() {
             List<Booking> bookingList = new ArrayList<Booking>();
-
             String selectQuery = "Select * from " + TABLE_BOOKINGS + " order by " + KEY_AR_DATE + " desc";
             Cursor cursor = db.rawQuery(selectQuery, null);
             ArrayList<HashMap<String, String>> menuItems = new ArrayList<HashMap<String, String>>();
@@ -575,7 +578,7 @@ public class BookingsActivity extends ListActivity {
         setContentView(R.layout.activity_bookings);
 
 
-        DatabaseHandler db = new DatabaseHandler(this);
+        db = new DatabaseHandler(this);
 
         Intent intent = getIntent();
         Bundle bundle;
@@ -609,6 +612,36 @@ public class BookingsActivity extends ListActivity {
 
             db.addBooking(booking);
         }
+    }
+
+    public void onItemClick(View view) {
+        ViewGroup row = (ViewGroup) view.getParent();
+        TextView tekst = (TextView) row.getChildAt(0);
+        int idRezerwacji = Integer.parseInt(tekst.getText().toString());
+        Intent intent = new Intent(this, BookingActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("BookingId", String.valueOf(idRezerwacji));
+        bundle.putString("name", db.getBooking(idRezerwacji).getClientName());
+        bundle.putString("surname", db.getBooking(idRezerwacji).getClientSurname());
+        bundle.putString("ar_date", db.getBooking(idRezerwacji).getArDate());
+        bundle.putString("dep_date", db.getBooking(idRezerwacji).getDepDate());
+        bundle.putString("adults", String.valueOf(db.getBooking(idRezerwacji).getNumberOfAdults()));
+        bundle.putString("adultsPrice", String.valueOf((db.getBooking(idRezerwacji).getAdultsCurrentPrice())));
+        bundle.putString("babies", String.valueOf(db.getBooking(idRezerwacji).getNumberOfBabies()));
+        bundle.putString("babiesPrice", String.valueOf((db.getBooking(idRezerwacji).getBabiesCurrentPrice())));
+        bundle.putString("dog",  String.valueOf(db.getBooking(idRezerwacji).getDog()));
+        bundle.putString("dogPrice", String.valueOf((db.getBooking(idRezerwacji).getDogCurrentPrice())));
+        bundle.putString("train",   String.valueOf(db.getBooking(idRezerwacji).getTrain()));
+        bundle.putString("trainPrice", String.valueOf((db.getBooking(idRezerwacji).getTrainCurrentPrice())));
+        bundle.putString("airport",  String.valueOf(db.getBooking(idRezerwacji).getAirport()));
+        bundle.putString("airportPrice", String.valueOf((db.getBooking(idRezerwacji).getAirportCurrentPrice())));
+        bundle.putString("cleaning",   String.valueOf(db.getBooking(idRezerwacji).getCleaning()));
+        bundle.putString("cleaningPrice", String.valueOf((db.getBooking(idRezerwacji).getCleaningCurrentPrice())));
+        bundle.putString("email", db.getBooking(idRezerwacji).getClientEmail());
+        bundle.putString("phone", db.getBooking(idRezerwacji).getClientPhone());
+
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
 
