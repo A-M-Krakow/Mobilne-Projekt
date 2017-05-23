@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:orientation="vertical">
 
     <Button
@@ -24,5 +24,15 @@
         android:layout_height="wrap_content"
         android:text="@string/setPrices"
         android:onClick="setPrices"/>
+
+    <Button
+        android:id="@+id/bookingsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/showBookings"
+        android:onClick="showBookings"/>
+
+
+
 
 </LinearLayout>

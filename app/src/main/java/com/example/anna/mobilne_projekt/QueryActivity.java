@@ -62,7 +62,6 @@ public class QueryActivity extends AppCompatActivity {
         trainCheckBox.setChecked(trainBool);
         airportCheckBox.setChecked(airportBool);
         cleaningCheckBox.setChecked(cleaningBool);
-
         arDateEditText.setText(bundle.getString("ar_date"));
         depDateEditText.setText(bundle.getString("dep_date"));
         daysEditText.setText(bundle.getString("days"));

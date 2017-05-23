@@ -25,6 +25,8 @@ public class BookingActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
 
     Bundle bundle;
+    EditText nameEditText;
+    EditText surnameEditText;
     EditText phoneEditText;
     EditText emailEditText;
     EditText arDateEditText;
@@ -42,6 +44,8 @@ public class BookingActivity extends AppCompatActivity {
     CheckBox trainCheckBox;
     CheckBox airportCheckBox;
     CheckBox cleaningCheckBox;
+    TextView totalPriceTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,36 +54,27 @@ public class BookingActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         context = this;
         sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-         adultPriceEditText = (EditText) findViewById(R.id.adultPriceEditText);
-         babiesPriceEditText = (EditText) findViewById(R.id.babiesPriceEditText);
+        adultPriceEditText = (EditText) findViewById(R.id.adultPriceEditText);
+        babiesPriceEditText = (EditText) findViewById(R.id.babiesPriceEditText);
         trainPriceEditText = (EditText) findViewById(R.id.trainPriceEditText);
         airportPriceEditText = (EditText) findViewById(R.id.airportPriceEditText);
         dogPriceEditText = (EditText) findViewById(R.id.dogPriceEditText);
         cleaningPriceEditText = (EditText) findViewById(R.id.cleaningPriceEditText);
-
-
-        EditText nameEditText = (EditText) findViewById(R.id.nameEditText);
-
+        nameEditText = (EditText) findViewById(R.id.nameEditText);
         phoneEditText = (EditText) findViewById(R.id.phoneEditText);
         emailEditText = (EditText) findViewById(R.id.emailEditText);
         arDateEditText = (EditText) findViewById(R.id.arDateEditText);
         depDateEditText = (EditText) findViewById(R.id.depDateEditText);
-
-
-        EditText surnameEditText = (EditText) findViewById(R.id.surnameEditText);
-
+        surnameEditText = (EditText) findViewById(R.id.surnameEditText);
         daysEditText = (EditText) findViewById(R.id.daysEditText);
         adultsEditText = (EditText) findViewById(R.id.adultsEditText);
         babiesEditText = (EditText) findViewById(R.id.babiesEditText);
-
-
         dogCheckBox = (CheckBox) findViewById(R.id.dogCheckBox);
         trainCheckBox = (CheckBox) findViewById(R.id.trainCheckBox);
         cleaningCheckBox = (CheckBox) findViewById(R.id.cleaningCheckBox);
         airportCheckBox = (CheckBox) findViewById(R.id.airportCheckBox);
+
         Intent intent = getIntent();
-
-
         nameEditText.setText(bundle.getString("name"));
         surnameEditText.setText(bundle.getString("surname"));
 
@@ -188,7 +183,7 @@ public class BookingActivity extends AppCompatActivity {
         BigDecimal totalprice = adultAmount.add(babiesAmount.add(dogAmount.add(trainAmount.add(airportAmount.add(cleaningAmount)))));
 
 
-        TextView totalPriceTextView = (TextView) findViewById(R.id.totalPriceTextView);
+        totalPriceTextView = (TextView) findViewById(R.id.totalPriceTextView);
         totalPriceTextView.setText(String.valueOf(totalprice));
 
     }
@@ -209,8 +204,31 @@ public class BookingActivity extends AppCompatActivity {
 
     }
 
-    private void makeBooking(View view)
+    public void makeBooking(View view)
     {
+        Intent intent = new Intent(this, BookingsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("name", nameEditText.getText().toString());
+        bundle.putString("surname", surnameEditText.getText().toString());
+        bundle.putString("ar_date", arDateEditText.getText().toString());
+        bundle.putString("dep_date", depDateEditText.getText().toString());
+        bundle.putString("adults", adultsEditText.getText().toString());
+        bundle.putString("adultsPrice", adultPriceEditText.getText().toString());
+        bundle.putString("babies", babiesEditText.getText().toString());
+        bundle.putString("babiesPrice", babiesPriceEditText.getText().toString());
+        bundle.putBoolean("dog",  dogCheckBox.isChecked());
+        bundle.putString("dogPrice", dogPriceEditText.getText().toString());
+        bundle.putBoolean("train",  trainCheckBox.isChecked());
+        bundle.putString("trainPrice", trainPriceEditText.getText().toString());
+        bundle.putBoolean("airport",  airportCheckBox.isChecked());
+        bundle.putString("airportPrice", airportPriceEditText.getText().toString());
+        bundle.putBoolean("cleaning",  cleaningCheckBox.isChecked());
+        bundle.putString("cleaningPrice", cleaningPriceEditText.getText().toString());
+        bundle.putString("email", emailEditText.getText().toString());
+        bundle.putString("phone", phoneEditText.getText().toString());
+
+        intent.putExtras(bundle);
+        startActivity(intent);
 
     }
 
