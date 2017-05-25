@@ -273,12 +273,10 @@ public class BookingsActivity extends ListActivity {
 
         //nazwy kolumn tabeli accommodations
         private static final String KEY_ACC_NAME = "AccName";
-        private static final String KEY_ACC_PRICE = "AccPrice";
 
 
         //nazwy kolumn tabeli additions
         private static final String KEY_ADD_NAME = "AddName";
-        private static final String KEY_ADD_PRICE = "AddPrice";
 
         //nazwy kolumn z aktualną ceną w  tabelach bookingAccomodations i bookingAdditions
         private static final String KEY_CURR_PRICE = "CurrentPrice";
