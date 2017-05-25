@@ -32,7 +32,7 @@ Po wybraniu interesującego nas zapytania, zostają wyświetlone jego szczegół
 Na ekranie, który się pojawił można wykonać telefon do klienta albo wysłać do niego wiadomość e-mail (odpowiednie przciski).
 Istnieje również przycisk "rezerwuj" przekształcający zapytanie w rezerwację, która będzie mogła być zapisana w pamięci urządzenia (baza sqlite).
 
-####Rezerwacja
+###Rezerwacja
 Ekran rezerwacji umożliwia edycję jej szczegółów z jednoczesnym obliczaniem całkowitej kwoty rezerwacji. 
 Jest on bliźniaczy to ekranu rezerwacji opisanego pod opcją "POKAŻ REZERWACJE" z tą różnicą, że w przypadku nowej rezerwacji
 zostanie ona dopisana do bazy sqlite, natomiast rezerwacja już istniejąca, po użyciu przycisku "zapisz" zostanie po prostu zaktualizowana.
