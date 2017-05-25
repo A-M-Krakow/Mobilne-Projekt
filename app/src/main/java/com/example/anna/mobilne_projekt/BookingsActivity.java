@@ -36,6 +36,7 @@ public class BookingsActivity extends ListActivity {
     private final String KEY_SURNAME = "NazwiskoKlienta";
     private final String KEY_EMAIL = "emailKlienta";
     private final String KEY_PHONE = "telefonKlienta";
+    Bundle bundle;
 
     public class Booking {
         private String clientName;
@@ -416,12 +417,12 @@ public class BookingsActivity extends ListActivity {
             }
 
             // Pobieranie z bazy psa dla rezerwacji o podanym Id
-            String selectDogBookingQuery = "select " + KEY_CURR_PRICE + " from " + TABLE_BOOKING_ACCOMODATIONS + " where " + KEY_BOOKING_ID + " = " + id + " and " + KEY_ACC_NAME + " = " + "\"" + DOG_ACCOMODATION + "\"";
+            String selectDogBookingQuery = "select " + KEY_NUMBER_OF_ACCOMODATIONS + ", " + KEY_CURR_PRICE + " from " + TABLE_BOOKING_ACCOMODATIONS + " where " + KEY_BOOKING_ID + " = " + id + " and " + KEY_ACC_NAME + " = " + "\"" + DOG_ACCOMODATION + "\"";
             cursor = db.rawQuery(selectDogBookingQuery, null);
             if (cursor.getCount() > 0) {
                 if (cursor != null) cursor.moveToFirst();
-                booking.setDog(1);
-                booking.setDogCurrentPrice(cursor.getDouble(0));
+                booking.setDog(cursor.getInt(0));
+                booking.setDogCurrentPrice(cursor.getDouble(1));
             }
 
             // Pobieranie z bazy transportu z dworca dla rezerwacji o podanym Id
@@ -456,8 +457,12 @@ public class BookingsActivity extends ListActivity {
             return booking;
         }
 
-        //aktualizacja rezerwacji
-  /*  public int updateBooking(Booking booking) {
+
+
+        //aktualizacja danych rezerwacji
+        public void updateBooking(Booking booking) {
+
+        //aktualizacja danych w tabeli Bookings
         ContentValues values = new ContentValues();
         values.put(KEY_CLIENT_NAME, booking.getClientName());
         values.put(KEY_CLIENT_SURNAME, booking.getClientSurname());
@@ -465,11 +470,114 @@ public class BookingsActivity extends ListActivity {
         values.put(KEY_CLIENT_PHONE, booking.getClientPhone());
         values.put(KEY_CONFIRMED, booking.getConfirmed());
         values.put(KEY_AR_DATE, booking.getArDate());
-        values.put(KEY_DEP_DATE, booking.getDepDate());
+        values.put(KEY_DEP_DATE, booking.getDepDate()); ContentValues bookingValues = new ContentValues();
+        bookingValues.put(KEY_CLIENT_NAME, booking.getClientName());
+        bookingValues.put(KEY_CLIENT_SURNAME, booking.getClientSurname());
+        bookingValues.put(KEY_CLIENT_PHONE, booking.getClientPhone());
+        bookingValues.put(KEY_CLIENT_EMAIL, booking.getClientEmail());
+        bookingValues.put(KEY_AR_DATE, booking.getArDate());
+        bookingValues.put(KEY_DEP_DATE, booking.getDepDate());
+        bookingValues.put(KEY_CONFIRMED, booking.getConfirmed());
 
-        //Aktualizacja wiersza
-       return db.update(TABLE_BOOKINGS, values, KEY_BOOKING_ID + " =? ", new String[] {String.valueOf(booking.getBookingId())});
-    } */
+        db.update(TABLE_BOOKINGS, values, KEY_BOOKING_ID + " = " + bundle.getString("BookingId"), null);
+
+            // aktualizacja dorosłych w rezerwacji
+            ContentValues adultsAccomodationValues = new ContentValues();
+            adultsAccomodationValues.put(KEY_CURR_PRICE, booking.getAdultsCurrentPrice());
+            adultsAccomodationValues.put(KEY_NUMBER_OF_ACCOMODATIONS, booking.getNumberOfAdults());
+            db.update(TABLE_BOOKING_ACCOMODATIONS, adultsAccomodationValues, KEY_BOOKING_ID + " = " + bundle.getString("BookingId") + " and " + KEY_ACC_NAME + " = " + "\"" + ADULT_ACCOMODATION + "\"", null);
+
+            // aktualizacja dzieci w rezerwacji
+
+            ContentValues babiesAccomodationValues = new ContentValues();
+            babiesAccomodationValues.put(KEY_CURR_PRICE, booking.getBabiesCurrentPrice());
+            babiesAccomodationValues.put(KEY_NUMBER_OF_ACCOMODATIONS, booking.getNumberOfBabies());
+            db.update(TABLE_BOOKING_ACCOMODATIONS, babiesAccomodationValues, KEY_BOOKING_ID + " = " + bundle.getString("BookingId") + " and " + KEY_ACC_NAME + " = " + "\"" + BABY_ACCOMODATION + "\"", null);
+
+            // aktualizacja psa w rezerwacji
+
+
+
+            ContentValues dogAccomodationValues = new ContentValues();
+            dogAccomodationValues.put(KEY_CURR_PRICE, booking.getDogCurrentPrice());
+            dogAccomodationValues.put(KEY_NUMBER_OF_ACCOMODATIONS, booking.getDog());
+            db.update(TABLE_BOOKING_ACCOMODATIONS, dogAccomodationValues, KEY_BOOKING_ID + " = " + bundle.getString("BookingId") + " and " + KEY_ACC_NAME + " = " + "\"" + DOG_ACCOMODATION + "\"", null);
+
+            // aktualizacja transportu z dworca
+
+                //sprawdzamy, czy w bazie danych pociąg jest dodany do rezerwacji
+                Cursor cursor = null;
+                String sql ="SELECT * FROM "+ TABLE_BOOKING_ADDITIONS +" WHERE " +  KEY_BOOKING_ID + "=" + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + "=" + "\"" + TRAIN_ADDITION + "\"";
+                cursor= db.rawQuery(sql,null);
+            if (booking.getTrain() > 0) {           //  transport z pociągu ma być dodany do rezerwacji
+                if (cursor.getCount() == 0) {            // pociągu nie było wcześniej w rezerwacji
+                    // dodajemy pociąg do rezerwacji
+                    ContentValues trainValues = new ContentValues();
+                    trainValues.put(KEY_BOOKING_ID, bundle.getString("BookingId"));
+                    trainValues.put(KEY_ADD_NAME, TRAIN_ADDITION);
+                    trainValues.put(KEY_CURR_PRICE, booking.getTrainCurrentPrice());
+                    db.insert(TABLE_BOOKING_ADDITIONS, null, trainValues);
+                }
+            }
+            else {                  // transportu z pociągu nie ma być w rezerwacji
+                    if (cursor.getCount() > 0) {           // pociąg był wcześniej w rezerwacji
+                        // usuwamy pociąg z rezerwacji
+                        db.delete(TABLE_BOOKING_ADDITIONS,KEY_BOOKING_ID + " = " + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + " = " + "\"" + TRAIN_ADDITION + "\"", null);
+                    }
+                }
+
+            // aktualizacja transportu z lotniska
+
+            //sprawdzamy, czy w bazie danych lotnisko jest dodane do rezerwacji
+            cursor = null;
+            sql ="SELECT * FROM "+ TABLE_BOOKING_ADDITIONS +" WHERE " +  KEY_BOOKING_ID + "=" + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + "=" + "\"" + AIRPORT_ADDITION + "\"";
+            cursor= db.rawQuery(sql,null);
+
+            if (booking.getAirport() > 0) {           //  transport z lotniska ma być dodany do rezerwacji
+
+                if (cursor.getCount() == 0) {            // lotniska nie było wcześniej w rezerwacji
+
+                    // dodajemy lotnisko do rezerwacji
+                    ContentValues airportValues = new ContentValues();
+                    airportValues.put(KEY_BOOKING_ID, bundle.getString("BookingId"));
+                    airportValues.put(KEY_ADD_NAME, AIRPORT_ADDITION);
+                    airportValues.put(KEY_CURR_PRICE, booking.getAirportCurrentPrice());
+                    db.insert(TABLE_BOOKING_ADDITIONS, null, airportValues);
+                }
+            }
+            else {                  // transportu z lotniska nie ma być w rezerwacji
+
+                if (cursor.getCount() > 0) {           // lotnisko było wcześniej w rezerwacji
+                    // usuwamy lotnisko z rezerwacji
+                    db.delete(TABLE_BOOKING_ADDITIONS,KEY_BOOKING_ID + " = " + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + " = " + "\"" + AIRPORT_ADDITION + "\"", null);
+                }
+            }
+
+            //sprawdzamy, czy w bazie danych sprzątanie jest dodane do rezerwacji
+            cursor = null;
+            sql ="SELECT * FROM " + TABLE_BOOKING_ADDITIONS +" WHERE " +  KEY_BOOKING_ID + "=" + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + "=" + "\"" + CLEANING_ADDITION + "\"";
+            cursor= db.rawQuery(sql,null);
+
+            if (booking.getCleaning() > 0) {           //  sprzątanie ma być dodane do rezerwacji
+
+                if (cursor.getCount() == 0) {            // sprzątania nie było wcześniej w rezerwacji
+
+                    // dodajemy sprzątanie do rezerwacji
+                    ContentValues cleaningValues = new ContentValues();
+                    cleaningValues.put(KEY_BOOKING_ID, bundle.getString("BookingId"));
+                    cleaningValues.put(KEY_ADD_NAME, CLEANING_ADDITION);
+                    cleaningValues.put(KEY_CURR_PRICE, booking.getCleaningCurrentPrice());
+                    db.insert(TABLE_BOOKING_ADDITIONS, null, cleaningValues);
+                }
+            }
+            else {                  // sprzątania nie ma być w rezerwacji
+
+                if (cursor.getCount() > 0) {           // sprzątanie było wcześniej w rezerwacji
+                    // usuwamy sprzątanie z rezerwacji
+                    db.delete(TABLE_BOOKING_ADDITIONS,KEY_BOOKING_ID + " = " + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + " = " + "\"" + CLEANING_ADDITION + "\"", null);
+                }
+            }
+    }
 
     /* public void deleteBooking(Booking booking) {
         db.delete(TABLE_BOOKINGS, KEY_BOOKING_ID + " = ? ", new String[] {String.valueOf(booking.getBookingId())});
@@ -499,26 +607,28 @@ public class BookingsActivity extends ListActivity {
 
 
             // dodawanie dzieci do rezerwacji
-            if (booking.getNumberOfBabies() > 0) {
+
                 ContentValues babiesAccomodationValues = new ContentValues();
                 babiesAccomodationValues.put(KEY_BOOKING_ID, insertedId);
                 babiesAccomodationValues.put(KEY_ACC_NAME, BABY_ACCOMODATION);
                 babiesAccomodationValues.put(KEY_CURR_PRICE, booking.getBabiesCurrentPrice());
                 babiesAccomodationValues.put(KEY_NUMBER_OF_ACCOMODATIONS, booking.getNumberOfBabies());
                 db.insert(TABLE_BOOKING_ACCOMODATIONS, null, babiesAccomodationValues);
-            }
+
 
             // dodawanie psa do rezerwacji
-            if (booking.getDog() > 0) {
+
                 ContentValues dogAccomodationValues = new ContentValues();
                 dogAccomodationValues.put(KEY_BOOKING_ID, insertedId);
                 dogAccomodationValues.put(KEY_ACC_NAME, DOG_ACCOMODATION);
                 dogAccomodationValues.put(KEY_CURR_PRICE, booking.getDogCurrentPrice());
                 dogAccomodationValues.put(KEY_NUMBER_OF_ACCOMODATIONS, booking.getDog());
                 db.insert(TABLE_BOOKING_ACCOMODATIONS, null, dogAccomodationValues);
-            }
+
+
 
             // dodawanie do rezerwacji transportu z dworca
+
             if (booking.getTrain() > 0) {
                 ContentValues trainValues = new ContentValues();
                 trainValues.put(KEY_BOOKING_ID, insertedId);
@@ -527,7 +637,9 @@ public class BookingsActivity extends ListActivity {
                 db.insert(TABLE_BOOKING_ADDITIONS, null, trainValues);
             }
 
+
             // dodawanie do rezerwacji transportu z lotniska
+
             if (booking.getAirport() > 0) {
                 ContentValues airportValues = new ContentValues();
                 airportValues.put(KEY_BOOKING_ID, insertedId);
@@ -536,14 +648,17 @@ public class BookingsActivity extends ListActivity {
                 db.insert(TABLE_BOOKING_ADDITIONS, null, airportValues);
             }
 
+
             // dodawanie do rezerwacji sprzątania
             if (booking.getCleaning() > 0) {
-                ContentValues airportValues = new ContentValues();
-                airportValues.put(KEY_BOOKING_ID, insertedId);
-                airportValues.put(KEY_ADD_NAME, CLEANING_ADDITION);
-                airportValues.put(KEY_CURR_PRICE, booking.getCleaningCurrentPrice());
-                db.insert(TABLE_BOOKING_ADDITIONS, null, airportValues);
+
+                ContentValues cleaningValues = new ContentValues();
+                cleaningValues.put(KEY_BOOKING_ID, insertedId);
+                cleaningValues.put(KEY_ADD_NAME, CLEANING_ADDITION);
+                cleaningValues.put(KEY_CURR_PRICE, booking.getCleaningCurrentPrice());
+                db.insert(TABLE_BOOKING_ADDITIONS, null, cleaningValues);
             }
+
 
 
         }
@@ -581,9 +696,7 @@ public class BookingsActivity extends ListActivity {
         db = new DatabaseHandler(this);
 
         Intent intent = getIntent();
-        Bundle bundle;
         bundle = getIntent().getExtras();
-
         ListAdapter adapter = new SimpleAdapter(BookingsActivity.this, db.showAllBookings(), R.layout.list_item, new String[]{KEY_QUERY, KEY_ID}, new int[]{R.id.queryTextViev, R.id.queryId});
         BookingsActivity.this.setListAdapter(adapter);
 
@@ -609,8 +722,8 @@ public class BookingsActivity extends ListActivity {
                     bundle.getBoolean("cleaning"),
                     Double.valueOf(bundle.getString("cleaningPrice"))
             );
-
-            db.addBooking(booking);
+            if(bundle.containsKey("BookingId")) db.updateBooking(booking);
+            else db.addBooking(booking);
         }
     }
 

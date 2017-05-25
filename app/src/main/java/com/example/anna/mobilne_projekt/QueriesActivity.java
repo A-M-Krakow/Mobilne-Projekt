@@ -96,11 +96,11 @@ public class QueriesActivity extends ListActivity {
 
         protected String doInBackground(String... urls) {
             String response = "";
-
+            HttpURLConnection conn;
 
             try {
                 URL url = new URL(urls[0]);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn = (HttpURLConnection) url.openConnection();
                 conn.connect();
                 InputStream is = conn.getInputStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -109,11 +109,13 @@ public class QueriesActivity extends ListActivity {
                 while ((s = br.readLine()) != null) {
                     response +=s;
                 }
+                conn.disconnect();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             return response;
+
         }
 
         protected void onPostExecute(String result) {
@@ -136,6 +138,7 @@ public class QueriesActivity extends ListActivity {
                 ListAdapter adapter = new SimpleAdapter(QueriesActivity.this, menuItems, R.layout.list_item, new String[]{KEY_QUERY, KEY_ID}, new int[]{R.id.queryTextViev, R.id.queryId});
 
                 QueriesActivity.this.setListAdapter(adapter);
+
 
             }
             else {

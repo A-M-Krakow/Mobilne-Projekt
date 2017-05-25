@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -73,6 +72,7 @@ public class BookingActivity extends AppCompatActivity {
         trainCheckBox = (CheckBox) findViewById(R.id.trainCheckBox);
         cleaningCheckBox = (CheckBox) findViewById(R.id.cleaningCheckBox);
         airportCheckBox = (CheckBox) findViewById(R.id.airportCheckBox);
+
         View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener () {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus) {
@@ -100,7 +100,6 @@ public class BookingActivity extends AppCompatActivity {
         Boolean trainBool = (!bundle.getString("train").equals("0")) ? true : false;
         Boolean airportBool = (!bundle.getString("airport").equals("0")) ? true : false;
         Boolean cleaningBool = (!bundle.getString("cleaning").equals("0")) ? true : false;
-
         dogCheckBox.setChecked(dogBool);
         trainCheckBox.setChecked(trainBool);
         airportCheckBox.setChecked(airportBool);
@@ -234,30 +233,31 @@ public class BookingActivity extends AppCompatActivity {
 
     public void makeBooking(View view)
     {
-        Intent intent = new Intent(this, BookingsActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("name", nameEditText.getText().toString());
-        bundle.putString("surname", surnameEditText.getText().toString());
-        bundle.putString("ar_date", arDateEditText.getText().toString());
-        bundle.putString("dep_date", depDateEditText.getText().toString());
-        bundle.putString("adults", adultsEditText.getText().toString());
-        bundle.putString("adultsPrice", adultPriceEditText.getText().toString());
-        bundle.putString("babies", babiesEditText.getText().toString());
-        bundle.putString("babiesPrice", babiesPriceEditText.getText().toString());
-        bundle.putBoolean("dog",  dogCheckBox.isChecked());
-        bundle.putString("dogPrice", dogPriceEditText.getText().toString());
-        bundle.putBoolean("train",  trainCheckBox.isChecked());
-        bundle.putString("trainPrice", trainPriceEditText.getText().toString());
-        bundle.putBoolean("airport",  airportCheckBox.isChecked());
-        bundle.putString("airportPrice", airportPriceEditText.getText().toString());
-        bundle.putBoolean("cleaning",  cleaningCheckBox.isChecked());
-        bundle.putString("cleaningPrice", cleaningPriceEditText.getText().toString());
-        bundle.putString("email", emailEditText.getText().toString());
-        bundle.putString("phone", phoneEditText.getText().toString());
-
-        intent.putExtras(bundle);
-        startActivity(intent);
-
+        Intent intent_out = new Intent(this, BookingsActivity.class);
+        Bundle bundle_out = new Bundle();
+        if(bundle.containsKey("BookingId")) {
+            bundle_out.putString("BookingId", bundle.getString("BookingId"));
+    }
+        bundle_out.putString("name", nameEditText.getText().toString());
+        bundle_out.putString("surname", surnameEditText.getText().toString());
+        bundle_out.putString("ar_date", arDateEditText.getText().toString());
+        bundle_out.putString("dep_date", depDateEditText.getText().toString());
+        bundle_out.putString("adults", adultsEditText.getText().toString());
+        bundle_out.putString("adultsPrice", adultPriceEditText.getText().toString());
+        bundle_out.putString("babies", babiesEditText.getText().toString());
+        bundle_out.putString("babiesPrice", babiesPriceEditText.getText().toString());
+        bundle_out.putBoolean("dog",  dogCheckBox.isChecked());
+        bundle_out.putString("dogPrice", dogPriceEditText.getText().toString());
+        bundle_out.putBoolean("train",  trainCheckBox.isChecked());
+        bundle_out.putString("trainPrice", trainPriceEditText.getText().toString());
+        bundle_out.putBoolean("airport",  airportCheckBox.isChecked());
+        bundle_out.putString("airportPrice", airportPriceEditText.getText().toString());
+        bundle_out.putBoolean("cleaning",  cleaningCheckBox.isChecked());
+        bundle_out.putString("cleaningPrice", cleaningPriceEditText.getText().toString());
+        bundle_out.putString("email", emailEditText.getText().toString());
+        bundle_out.putString("phone", phoneEditText.getText().toString());
+        intent_out.putExtras(bundle_out);
+        startActivity(intent_out);
     }
 
 
