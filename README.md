@@ -52,7 +52,3 @@ Po wciśnięciu przycisku "zapisz" rezerwacja zostanie zapisana w wewnętrznej b
 
 ## USTAW CENY (PricesActivity)  
 Ekran ten pozwala na zapisanie w pamięci urządzenia (w formie shared preferences) cen wynajmu, do których dostęp mają inne aktywności.
-
-
-
-
