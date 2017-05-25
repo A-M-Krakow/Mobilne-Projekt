@@ -82,34 +82,11 @@ public class QueryActivity extends AppCompatActivity {
     public void emailClient(View view) {
         String[] email = {emailEditText.getText().toString()};
         Intent intent = new Intent(Intent.ACTION_SEND);
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
         intent.setData(Uri.parse("mailto:"));
         intent.setType("text/plain");
 
         intent.putExtra(Intent.EXTRA_EMAIL, email);
         intent.putExtra(Intent.EXTRA_SUBJECT, "Rezerwacja mieszkania w Krakowie od: " + arDateEditText.getText().toString() + " do: " + depDateEditText.getText().toString());
-        String messageText =  "W związku z przesłanym zapytaniem o dostępność mieszkania w Krakowie w terminie  od: "
-                + arDateEditText.getText().toString() + " do: " + depDateEditText.getText().toString() + " informuję, że ";
-
-
-        switch(view.getId())
-        {
-            case R.id.emailButtonYes:
-                messageText+=" w tym przedziale czasowym mieszkanie jest dostępne.  W celu dokonania rezerwacji, proszę o kontakt telefoniczny na numer: +48884680129.";
-                break;
-            case R.id.emailButtonNo:
-                messageText+=" w tym przedziale czasowym nie ma możliwoście rezerwacji.";
-                break;
-            default:
-                throw new RuntimeException("Unknow button ID");
-        }
-
-        messageText+=" Z poważaniem, Anna Madej.";
-
-        intent.putExtra(Intent.EXTRA_TEXT,
-                messageText);
-
-
         try {
             startActivity(Intent.createChooser(intent, getString(R.string.choosseEmaiClient)));
             finish();

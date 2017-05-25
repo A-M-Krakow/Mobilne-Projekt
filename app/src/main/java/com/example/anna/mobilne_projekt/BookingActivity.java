@@ -149,7 +149,6 @@ public class BookingActivity extends AppCompatActivity {
     public void emailClient(View view) {
         String[] email = {emailEditText.getText().toString()};
         Intent intent = new Intent(Intent.ACTION_SEND);
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
         intent.setData(Uri.parse("mailto:"));
         intent.setType("text/plain");
 

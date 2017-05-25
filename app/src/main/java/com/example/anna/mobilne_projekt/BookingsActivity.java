@@ -4,24 +4,16 @@ import android.app.ListActivity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-
-import org.w3c.dom.Element;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -322,9 +314,9 @@ public class BookingsActivity extends ListActivity {
                     KEY_CLIENT_NAME + " TEXT, " + KEY_CLIENT_SURNAME + " TEXT,  " + KEY_CLIENT_PHONE + " TEXT, " + KEY_CLIENT_EMAIL + " TEXT, " +
                     KEY_CONFIRMED + " INTEGER, " + KEY_AR_DATE + " TEXT," + KEY_DEP_DATE + " TEXT)";
 
-            String CREATE_ACCOMODATIONS_TABLE = "CREATE TABLE " + TABLE_ACCOMODATIONS + "(" + KEY_ACC_NAME + " TEXT PRIMARY KEY," + KEY_ACC_PRICE + " REAL)";
+            String CREATE_ACCOMODATIONS_TABLE = "CREATE TABLE " + TABLE_ACCOMODATIONS + "(" + KEY_ACC_NAME + " TEXT PRIMARY KEY)";
 
-            String CREATE_ADDITIONS_TABLE = "CREATE TABLE " + TABLE_ADDITIONS + "(" + KEY_ADD_NAME + " TEXT PRIMARY KEY," + KEY_ADD_PRICE + " REAL)";
+            String CREATE_ADDITIONS_TABLE = "CREATE TABLE " + TABLE_ADDITIONS + "(" + KEY_ADD_NAME + " TEXT PRIMARY KEY)";
 
             String CREATE_BOOKING_ACCOMODATIONS_TABLE = "CREATE TABLE " + TABLE_BOOKING_ACCOMODATIONS + " (" + KEY_BOOKING_ID + " INTEGER, " + KEY_ACC_NAME + " TEXT, " + KEY_CURR_PRICE + " REAL, " + KEY_NUMBER_OF_ACCOMODATIONS + " INT, PRIMARY KEY(" + KEY_BOOKING_ID + ", " + KEY_ACC_NAME + "), FOREIGN KEY( " + KEY_BOOKING_ID + " ) REFERENCES " + TABLE_BOOKINGS + "( " + KEY_BOOKING_ID + "), FOREIGN KEY( " + KEY_ACC_NAME + " ) REFERENCES " + TABLE_ACCOMODATIONS + "( " + KEY_ACC_NAME + "), UNIQUE ( " + KEY_BOOKING_ID + "," + KEY_ACC_NAME + "))";
 
@@ -339,29 +331,23 @@ public class BookingsActivity extends ListActivity {
 
             ContentValues accomodationOption = new ContentValues();
             accomodationOption.put(KEY_ACC_NAME, ADULT_ACCOMODATION);
-            accomodationOption.put(KEY_ACC_PRICE, "0");
             db.insert(TABLE_ACCOMODATIONS, null, accomodationOption);
             accomodationOption.clear();
             accomodationOption.put(KEY_ACC_NAME, BABY_ACCOMODATION);
-            accomodationOption.put(KEY_ACC_PRICE, "0");
             db.insert(TABLE_ACCOMODATIONS, null, accomodationOption);
             accomodationOption.clear();
             accomodationOption.put(KEY_ACC_NAME, DOG_ACCOMODATION);
-            accomodationOption.put(KEY_ACC_PRICE, "0");
             db.insert(TABLE_ACCOMODATIONS, null, accomodationOption);
             accomodationOption.clear();
 
             ContentValues additionalOption = new ContentValues();
             additionalOption.put(KEY_ADD_NAME, CLEANING_ADDITION);
-            additionalOption.put(KEY_ADD_PRICE, "0");
             db.insert(TABLE_ADDITIONS, null, additionalOption);
             additionalOption.clear();
             additionalOption.put(KEY_ADD_NAME, TRAIN_ADDITION);
-            additionalOption.put(KEY_ADD_PRICE, "0");
             db.insert(TABLE_ADDITIONS, null, additionalOption);
             additionalOption.clear();
             additionalOption.put(KEY_ADD_NAME, AIRPORT_ADDITION);
-            additionalOption.put(KEY_ADD_PRICE, "0");
             db.insert(TABLE_ADDITIONS, null, additionalOption);
             additionalOption.clear();
 
@@ -687,8 +673,6 @@ public class BookingsActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookings);
 
@@ -697,8 +681,6 @@ public class BookingsActivity extends ListActivity {
 
         Intent intent = getIntent();
         bundle = getIntent().getExtras();
-        ListAdapter adapter = new SimpleAdapter(BookingsActivity.this, db.showAllBookings(), R.layout.list_item, new String[]{KEY_QUERY, KEY_ID}, new int[]{R.id.queryTextViev, R.id.queryId});
-        BookingsActivity.this.setListAdapter(adapter);
 
         if (bundle != null) {
 
@@ -725,6 +707,9 @@ public class BookingsActivity extends ListActivity {
             if(bundle.containsKey("BookingId")) db.updateBooking(booking);
             else db.addBooking(booking);
         }
+
+        ListAdapter adapter = new SimpleAdapter(BookingsActivity.this, db.showAllBookings(), R.layout.list_item, new String[]{KEY_QUERY, KEY_ID}, new int[]{R.id.queryTextViev, R.id.queryId});
+        BookingsActivity.this.setListAdapter(adapter);
     }
 
     public void onItemClick(View view) {

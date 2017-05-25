@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="@string/Bookings"/>
+        android:text="@string/Bookings"
+        android:textSize="30dp"/>
     
     <ListView
         android:id="@android:id/list"

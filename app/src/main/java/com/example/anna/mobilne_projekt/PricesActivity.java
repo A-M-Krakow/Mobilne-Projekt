@@ -1,6 +1,7 @@
 package com.example.anna.mobilne_projekt;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,24 +19,18 @@ public class PricesActivity extends AppCompatActivity {
     EditText airportPriceEditText;
     EditText cleaningPriceEditText;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prices);
         context = this;
         sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
         adultPriceEditText = (EditText) findViewById(R.id.adultPriceEditText);
         babyPriceEditText = (EditText) findViewById(R.id.babyPriceEditText);
         dogPriceEditText = (EditText) findViewById(R.id.dogPriceEditText);
         trainPriceEditText = (EditText) findViewById(R.id.trainPriceEditText);
         airportPriceEditText = (EditText) findViewById(R.id.airportPriceEditText);
         cleaningPriceEditText = (EditText) findViewById(R.id.cleaningPriceEditText);
-
-
-
         adultPriceEditText.setText(sharedPref.getString(getString(R.string.adultPrice), "50"));
         babyPriceEditText.setText(sharedPref.getString(getString(R.string.babyPrice), "35"));
         dogPriceEditText.setText(sharedPref.getString(getString(R.string.dogPrice), "10"));
@@ -55,6 +50,10 @@ public class PricesActivity extends AppCompatActivity {
         editor.putString(getString(R.string.airportPrice), airportPriceEditText.getText().toString());
         editor.putString(getString(R.string.cleaningPrice), cleaningPriceEditText.getText().toString());
         editor.commit();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+
     }
 
 

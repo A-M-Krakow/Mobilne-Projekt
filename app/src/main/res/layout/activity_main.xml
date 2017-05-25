@@ -8,15 +8,15 @@
         android:id="@+id/queriesButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/queries"
+        android:text="@string/showQueries"
         android:onClick="showQueries"/>
 
     <Button
-        android:id="@+id/bookingButton"
+        android:id="@+id/bookingsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="book"
-        android:onClick="makeBooking"/>
+        android:text="@string/showBookings"
+        android:onClick="showBookings"/>
 
     <Button
         android:id="@+id/pricesButton"
@@ -25,12 +25,7 @@
         android:text="@string/setPrices"
         android:onClick="setPrices"/>
 
-    <Button
-        android:id="@+id/bookingsButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/showBookings"
-        android:onClick="showBookings"/>
+
 
 
 

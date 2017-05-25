@@ -46,6 +46,8 @@
     <string name="change">Zmień</string>
     <string name="SendMessage">Napisz wiadomość</string>
     <string name="showBookings">Pokaż rezerwacje</string>
+    <string name="showQueries">Pokaż zapytania</string>
     <string name="Bookings">Rezerwacje:</string>
     <string name="save">Zapisz</string>
+    <string name="noPricelist">Najpierw ustaw ceny!</string>
 </resources>
