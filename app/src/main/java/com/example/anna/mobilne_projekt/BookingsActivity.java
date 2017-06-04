@@ -35,7 +35,7 @@ public class BookingsActivity extends ListActivity {
         private String clientSurname;
         private String clientPhone;
         private String clientEmail;
-        private int confirmed;
+        private int deleted;
         private String arDate;
         private String depDate;
         private int numberOfAdults;
@@ -52,14 +52,14 @@ public class BookingsActivity extends ListActivity {
         private Double cleaningCurrentPrice = 0.00;
 
 
-        public Booking(String clientName, String clientSurname, String clientPhone, String clientEmail, int confirmed, String arDate, String depDate, int numberOfAdults, Double adultsCurrentPrice, int numberOfBabies, Double babiesCurrentPrice, boolean dog, Double dogCurrentPrice, boolean train, Double trainCurrentPrice, boolean airport, Double airportCurrentPrice, boolean cleaning, double cleaningCurrentPrice) {
+        public Booking(String clientName, String clientSurname, String clientPhone, String clientEmail, int deleted, String arDate, String depDate, int numberOfAdults, Double adultsCurrentPrice, int numberOfBabies, Double babiesCurrentPrice, boolean dog, Double dogCurrentPrice, boolean train, Double trainCurrentPrice, boolean airport, Double airportCurrentPrice, boolean cleaning, double cleaningCurrentPrice) {
 
 
             this.clientName = clientName;
             this.clientSurname = clientSurname;
             this.clientPhone = clientPhone;
             this.clientEmail = clientEmail;
-            this.confirmed = confirmed;
+            this.deleted = deleted;
             this.arDate = arDate;
             this.depDate = depDate;
             this.numberOfAdults = numberOfAdults;
@@ -109,8 +109,8 @@ public class BookingsActivity extends ListActivity {
             this.clientEmail = newClientEmail;
         }
 
-        public void setConfirmation(int newConfirmed) {
-            this.confirmed = newConfirmed;
+        public void setDeleted(int newDeleted) {
+            this.deleted = newDeleted;
         }
 
         public void setArDate(String newArDate) {
@@ -233,8 +233,8 @@ public class BookingsActivity extends ListActivity {
             return cleaningCurrentPrice;
         }
 
-        public int getConfirmed() {
-            return confirmed;
+        public int getDeleted() {
+            return deleted;
         }
 
         public String getArDate() {
@@ -267,7 +267,7 @@ public class BookingsActivity extends ListActivity {
         private static final String KEY_CLIENT_SURNAME = "ClientSurname";
         private static final String KEY_CLIENT_PHONE = "ClientPhone";
         private static final String KEY_CLIENT_EMAIL = "ClientEmail";
-        private static final String KEY_CONFIRMED = "Confirmed";
+        private static final String KEY_DELETED = "Deleted";
         private static final String KEY_AR_DATE = "ArDate";
         private static final String KEY_DEP_DATE = "DepDate";
 
@@ -310,7 +310,7 @@ public class BookingsActivity extends ListActivity {
 
             String CREATE_BOOKINGS_TABLE = "CREATE TABLE " + TABLE_BOOKINGS + "(" + KEY_BOOKING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     KEY_CLIENT_NAME + " TEXT, " + KEY_CLIENT_SURNAME + " TEXT,  " + KEY_CLIENT_PHONE + " TEXT, " + KEY_CLIENT_EMAIL + " TEXT, " +
-                    KEY_CONFIRMED + " INTEGER, " + KEY_AR_DATE + " TEXT," + KEY_DEP_DATE + " TEXT)";
+                    KEY_DELETED + " INTEGER, " + KEY_AR_DATE + " TEXT," + KEY_DEP_DATE + " TEXT)";
 
             String CREATE_ACCOMODATIONS_TABLE = "CREATE TABLE " + TABLE_ACCOMODATIONS + "(" + KEY_ACC_NAME + " TEXT PRIMARY KEY)";
 
@@ -369,7 +369,7 @@ public class BookingsActivity extends ListActivity {
             Cursor cursor;
 
             // Pobieranie z bazy danych rezerwacji o podanym Id
-            String selectBookingQuery = "select * from " + TABLE_BOOKINGS + " where " + KEY_BOOKING_ID + " = " + id;
+            String selectBookingQuery = "select * from " + TABLE_BOOKINGS + " where " + KEY_BOOKING_ID + " = " + id + " and " + KEY_DELETED + " = " + 0;
             cursor = db.rawQuery(selectBookingQuery, null);
 
             if (cursor != null) cursor.moveToFirst();
@@ -380,7 +380,7 @@ public class BookingsActivity extends ListActivity {
             booking.setClientSurname(cursor.getString(2));
             booking.setClientPhone(cursor.getString(3));
             booking.setClientEmail(cursor.getString(4));
-            booking.setConfirmation(Integer.parseInt(cursor.getString(5)));
+            booking.setDeleted(Integer.parseInt(cursor.getString(5)));
             booking.setArDate(cursor.getString(6));
             booking.setDepDate(cursor.getString(7));
 
@@ -452,7 +452,7 @@ public class BookingsActivity extends ListActivity {
         values.put(KEY_CLIENT_SURNAME, booking.getClientSurname());
         values.put(KEY_CLIENT_EMAIL, booking.getClientEmail());
         values.put(KEY_CLIENT_PHONE, booking.getClientPhone());
-        values.put(KEY_CONFIRMED, booking.getConfirmed());
+        values.put(KEY_DELETED, booking.getDeleted());
         values.put(KEY_AR_DATE, booking.getArDate());
         values.put(KEY_DEP_DATE, booking.getDepDate()); ContentValues bookingValues = new ContentValues();
         bookingValues.put(KEY_CLIENT_NAME, booking.getClientName());
@@ -461,7 +461,7 @@ public class BookingsActivity extends ListActivity {
         bookingValues.put(KEY_CLIENT_EMAIL, booking.getClientEmail());
         bookingValues.put(KEY_AR_DATE, booking.getArDate());
         bookingValues.put(KEY_DEP_DATE, booking.getDepDate());
-        bookingValues.put(KEY_CONFIRMED, booking.getConfirmed());
+        bookingValues.put(KEY_DELETED, booking.getDeleted());
 
         db.update(TABLE_BOOKINGS, values, KEY_BOOKING_ID + " = " + bundle.getString("BookingId"), null);
 
@@ -577,7 +577,7 @@ public class BookingsActivity extends ListActivity {
             bookingValues.put(KEY_CLIENT_EMAIL, booking.getClientEmail());
             bookingValues.put(KEY_AR_DATE, booking.getArDate());
             bookingValues.put(KEY_DEP_DATE, booking.getDepDate());
-            bookingValues.put(KEY_CONFIRMED, booking.getConfirmed());
+            bookingValues.put(KEY_DELETED, booking.getDeleted());
 
             long insertedId = db.insert(TABLE_BOOKINGS, null, bookingValues);
 
@@ -686,7 +686,7 @@ public class BookingsActivity extends ListActivity {
                     bundle.getString("surname"),
                     bundle.getString("phone"),
                     bundle.getString("email"),
-                    1,
+                    0,
                     bundle.getString("ar_date"),
                     bundle.getString("dep_date"),
                     Integer.valueOf(bundle.getString("adults")),

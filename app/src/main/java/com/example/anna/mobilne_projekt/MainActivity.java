@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         else  {
             Toast.makeText(MainActivity.this,
                     R.string.noPricelist, Toast.LENGTH_SHORT).show();
+            setPrices(null);
         }
     }
 

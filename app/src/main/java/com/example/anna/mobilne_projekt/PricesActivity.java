@@ -27,6 +27,7 @@ import java.net.URLEncoder;
 
 public class PricesActivity extends AppCompatActivity {
     private String url = "http://a-m.netstrefa.pl/update.php";
+    Intent intent;
     Context context;
     SharedPreferences sharedPref;
     EditText adultPriceEditText;
@@ -55,23 +56,14 @@ public class PricesActivity extends AppCompatActivity {
         trainPriceEditText.setText(sharedPref.getString(getString(R.string.trainPrice), ""));
         airportPriceEditText.setText(sharedPref.getString(getString(R.string.airportPrice), ""));
         cleaningPriceEditText.setText(sharedPref.getString(getString(R.string.cleaningPrice), ""));
+        intent = new Intent(this, MainActivity.class);
+
 
 
     }
 
     public void setPrices(View view) {
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.adultPrice), adultPriceEditText.getText().toString());
-        editor.putString(getString(R.string.babyPrice), babyPriceEditText.getText().toString());
-        editor.putString(getString(R.string.dogPrice), dogPriceEditText.getText().toString());
-        editor.putString(getString(R.string.trainPrice), trainPriceEditText.getText().toString());
-        editor.putString(getString(R.string.airportPrice), airportPriceEditText.getText().toString());
-        editor.putString(getString(R.string.cleaningPrice), cleaningPriceEditText.getText().toString());
-        editor.commit();
-
         new SendPricesTask().execute();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
 
     }
 
@@ -156,6 +148,16 @@ public class PricesActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             dialog.dismiss();
             if (result != "") {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(getString(R.string.adultPrice), adultPriceEditText.getText().toString());
+                editor.putString(getString(R.string.babyPrice), babyPriceEditText.getText().toString());
+                editor.putString(getString(R.string.dogPrice), dogPriceEditText.getText().toString());
+                editor.putString(getString(R.string.trainPrice), trainPriceEditText.getText().toString());
+                editor.putString(getString(R.string.airportPrice), airportPriceEditText.getText().toString());
+                editor.putString(getString(R.string.cleaningPrice), cleaningPriceEditText.getText().toString());
+                editor.commit();
+
+                startActivity(intent);
                 Toast.makeText(PricesActivity.this,
                         R.string.pricesSent, Toast.LENGTH_SHORT).show();
 
