@@ -31,11 +31,11 @@ Może się tak zdarzyć w dwóch sytuacjach:
 W obu przypadkach, na ekranie telefonu zostanie wyświetlona odpowiednia informacja (toast).  
 Po wybraniu interesującego nas zapytania, zostają wyświetlone jego szczegóły.  
 
-*Szczegóły zapytania: *  (QueryActivity)  
+*Szczegóły zapytania:*  (QueryActivity)  
 Na ekranie, który się pojawił można wykonać telefon do klienta albo wysłać do niego wiadomość e-mail (odpowiednie przyciski).  
 Istnieje również przycisk "rezerwuj" przekształcający zapytanie w rezerwację, która będzie mogła być zapisana w pamięci urządzenia (baza sqlite).
 
-*Rezerwacja: * (BookingActivity)
+*Rezerwacja:* (BookingActivity)
 Ekran rezerwacji umożliwia edycję jej szczegółów z jednoczesnym obliczaniem całkowitej kwoty rezerwacji. 
 Jest on bliźniaczy to ekranu rezerwacji opisanego pod opcją "POKAŻ REZERWACJE" z tą różnicą, że w przypadku nowej rezerwacji
 zostanie ona dopisana do bazy sqlite, natomiast rezerwacja już istniejąca, po użyciu przycisku "zapisz" zostanie po prostu zaktualizowana.
@@ -43,7 +43,7 @@ zostanie ona dopisana do bazy sqlite, natomiast rezerwacja już istniejąca, po 
 ## POKAŻ REZERWACJE (BookingsActivity)  
 Przycisk ten powoduje wyświetlenie  listy zapisanych w bazie sqlite rezerwacji. 
 Na ekranie "Rezerwacje" można wybrać interesujący nas wpis i wyświetlić jego szczegóły. 
-*Szczegóły rezerwacji: * (BookingActivity)  
+*Szczegóły rezerwacji:* (BookingActivity)  
 Ekran ten umożliwia edycję jej szczegółów z jednoczesnym obliczaniem całkowitej kwoty rezerwacji.
 Na tym ekranie można też wysłać wiadomość albo wykonać telefon do klienta.
 Wybór dat pobytu realizowany jest poprzez graficzną reprezentacjękalendarza - datepicker.
@@ -52,7 +52,3 @@ Po wciśnięciu przycisku "zapisz" rezerwacja zostanie zapisana w wewnętrznej b
 
 ## USTAW CENY (PricesActivity)  
 Ekran ten pozwala na zapisanie w pamięci urządzenia (w formie shared preferences) cen wynajmu, do których dostęp mają inne aktywności.
-
-
-
-
