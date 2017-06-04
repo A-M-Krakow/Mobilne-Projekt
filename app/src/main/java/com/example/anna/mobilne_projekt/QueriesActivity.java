@@ -136,20 +136,13 @@ public class QueriesActivity extends ListActivity {
                     menuItems.add(map);
                 }
                 ListAdapter adapter = new SimpleAdapter(QueriesActivity.this, menuItems, R.layout.list_item, new String[]{KEY_QUERY, KEY_ID}, new int[]{R.id.queryTextViev, R.id.queryId});
-
                 QueriesActivity.this.setListAdapter(adapter);
-
-
             }
             else {
                 finish();
                 Toast.makeText(QueriesActivity.this,
                         R.string.noInternetConn, Toast.LENGTH_SHORT).show();
-
             }
-
-
-
         }
 
     }

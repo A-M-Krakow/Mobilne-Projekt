@@ -113,6 +113,10 @@
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:layout_margin="2dp"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
 
                 />
             <Button

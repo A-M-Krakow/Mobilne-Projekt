@@ -51,4 +51,6 @@
     <string name="save">Zapisz</string>
     <string name="noPricelist">Najpierw ustaw ceny!</string>
     <string name="newBooking">NOWA REZERWACJA</string>
+    <string name="sendingPrices">Wysyłanie cen na serwer</string>
+    <string name="pricesSent">Ceny wysłane na serwer!</string>
 </resources>

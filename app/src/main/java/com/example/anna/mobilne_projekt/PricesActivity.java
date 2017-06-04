@@ -5,41 +5,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import org.json.JSONObject;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
-import javax.net.ssl.HttpsURLConnection;
 
 
 public class PricesActivity extends AppCompatActivity {
@@ -86,8 +69,103 @@ public class PricesActivity extends AppCompatActivity {
         editor.putString(getString(R.string.cleaningPrice), cleaningPriceEditText.getText().toString());
         editor.commit();
 
+        new SendPricesTask().execute();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+
+    }
+
+    private class SendPricesTask extends AsyncTask<String, Void, String> {
+        private ProgressDialog dialog;
+        String dorosly = adultPriceEditText.getText().toString();
+        String dziecko = babyPriceEditText.getText().toString();
+        String pies = dogPriceEditText.getText().toString();
+        String pkp = trainPriceEditText.getText().toString();
+        String lotnisko = airportPriceEditText.getText().toString();
+        String sprzatanie = cleaningPriceEditText.getText().toString();
+
+
+        protected void onPreExecute() {
+            dialog = ProgressDialog.show(PricesActivity.this, "",
+                    getString(R.string.sendingPrices), true);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result = "";
+            String reg_url = "http://a-m.netstrefa.pl/update.php";
+            URL url = null;
+            HttpURLConnection httpURLConnection = null;
+            String data = null;
+            OutputStream os = null;
+            BufferedWriter bufferedWriter = null;
+            int statusCode = 0;
+
+            try {
+                url = new URL(reg_url);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                os = httpURLConnection.getOutputStream();
+                data = URLEncoder.encode("dorosly", "UTF-8") + "=" + URLEncoder.encode(dorosly, "UTF-8") + "&" +
+                        URLEncoder.encode("dziecko", "UTF-8") + "=" + URLEncoder.encode(dziecko, "UTF-8") + "&" +
+                        URLEncoder.encode("pies", "UTF-8") + "=" + URLEncoder.encode(pies, "UTF-8") + "&" +
+                        URLEncoder.encode("lotnisko", "UTF-8") + "=" + URLEncoder.encode(lotnisko, "UTF-8") + "&" +
+                        URLEncoder.encode("sprzatanie", "UTF-8") + "=" + URLEncoder.encode(sprzatanie, "UTF-8") + "&" +
+                        URLEncoder.encode("pkp", "UTF-8") + "=" + URLEncoder.encode(pkp, "UTF-8");
+                bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                statusCode = httpURLConnection.getResponseCode();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (statusCode == 200) {
+                BufferedReader reader = null;
+                try {
+                    reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                try {
+                    while ((line = reader.readLine()) != null)
+                    sb.append(line).append("\n");
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                result = sb.toString();
+            }
+            return result;
+
+        }
+
+        protected void onPostExecute(String result) {
+            dialog.dismiss();
+            if (result != "") {
+                Toast.makeText(PricesActivity.this,
+                        R.string.pricesSent, Toast.LENGTH_SHORT).show();
+
+            } else {
+                finish();
+                Toast.makeText(PricesActivity.this,
+                        R.string.noInternetConn, Toast.LENGTH_SHORT).show();
+
+            }
+        }
 
     }
 }
