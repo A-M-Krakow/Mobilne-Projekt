@@ -269,12 +269,11 @@
             android:layout_margin="2dp"
             />
 
-        <Button
-            android:id="@+id/emailButtonYes"
-            android:layout_width="0px"
-            android:layout_weight="1"
+        <ImageButton
+            android:id="@+id/emailButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/emailClient"
+            android:src="@android:drawable/ic_dialog_email"
             android:onClick="emailClient"/>
     </LinearLayout>
 
@@ -302,11 +301,11 @@
             android:layout_margin="2dp"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/callButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/call"
+            android:src="@android:drawable/sym_call_outgoing"
             android:onClick="callClient"/>
 
     </LinearLayout>
