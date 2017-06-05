@@ -58,4 +58,7 @@
     <string name="deleteReservation">Usunąć rezerwację?</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
+    <string name="deletingQuery">Usuwanie zapytania!</string>
+    <string name="deleteQuery">Usunąć zapytanie z serwera?</string>
+    <string name="queryDeleted">Zapytanie usunięte!</string>
 </resources>
