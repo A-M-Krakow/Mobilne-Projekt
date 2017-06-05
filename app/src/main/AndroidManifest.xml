@@ -23,10 +23,19 @@
         </activity>
         <activity android:name=".QueriesActivity" />
         <activity android:name=".QueryActivity" />
-        <activity android:name=".BookingsActivity" />
-        <activity android:name=".BookingActivity" />
+        <activity android:name=".BookingsActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.anna.mobilne_projekt.MainActivity"  />
+            </activity>
+        <activity android:name=".BookingActivity">
+
+        <activity android:name=".DatePickerFragment"/>
+
+        </activity>
         <activity android:name=".PricesActivity" />
-        <activity android:name=".DatePickerFragment"></activity>
+
     </application>
 
 </manifest>

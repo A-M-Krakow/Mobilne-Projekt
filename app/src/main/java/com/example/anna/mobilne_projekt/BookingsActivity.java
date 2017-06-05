@@ -1,18 +1,23 @@
 package com.example.anna.mobilne_projekt;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -442,28 +447,28 @@ public class BookingsActivity extends ListActivity {
         }
 
 
-
         //aktualizacja danych rezerwacji
         public void updateBooking(Booking booking) {
 
-        //aktualizacja danych w tabeli Bookings
-        ContentValues values = new ContentValues();
-        values.put(KEY_CLIENT_NAME, booking.getClientName());
-        values.put(KEY_CLIENT_SURNAME, booking.getClientSurname());
-        values.put(KEY_CLIENT_EMAIL, booking.getClientEmail());
-        values.put(KEY_CLIENT_PHONE, booking.getClientPhone());
-        values.put(KEY_DELETED, booking.getDeleted());
-        values.put(KEY_AR_DATE, booking.getArDate());
-        values.put(KEY_DEP_DATE, booking.getDepDate()); ContentValues bookingValues = new ContentValues();
-        bookingValues.put(KEY_CLIENT_NAME, booking.getClientName());
-        bookingValues.put(KEY_CLIENT_SURNAME, booking.getClientSurname());
-        bookingValues.put(KEY_CLIENT_PHONE, booking.getClientPhone());
-        bookingValues.put(KEY_CLIENT_EMAIL, booking.getClientEmail());
-        bookingValues.put(KEY_AR_DATE, booking.getArDate());
-        bookingValues.put(KEY_DEP_DATE, booking.getDepDate());
-        bookingValues.put(KEY_DELETED, booking.getDeleted());
+            //aktualizacja danych w tabeli Bookings
+            ContentValues values = new ContentValues();
+            values.put(KEY_CLIENT_NAME, booking.getClientName());
+            values.put(KEY_CLIENT_SURNAME, booking.getClientSurname());
+            values.put(KEY_CLIENT_EMAIL, booking.getClientEmail());
+            values.put(KEY_CLIENT_PHONE, booking.getClientPhone());
+            values.put(KEY_DELETED, booking.getDeleted());
+            values.put(KEY_AR_DATE, booking.getArDate());
+            values.put(KEY_DEP_DATE, booking.getDepDate());
+            ContentValues bookingValues = new ContentValues();
+            bookingValues.put(KEY_CLIENT_NAME, booking.getClientName());
+            bookingValues.put(KEY_CLIENT_SURNAME, booking.getClientSurname());
+            bookingValues.put(KEY_CLIENT_PHONE, booking.getClientPhone());
+            bookingValues.put(KEY_CLIENT_EMAIL, booking.getClientEmail());
+            bookingValues.put(KEY_AR_DATE, booking.getArDate());
+            bookingValues.put(KEY_DEP_DATE, booking.getDepDate());
+            bookingValues.put(KEY_DELETED, booking.getDeleted());
 
-        db.update(TABLE_BOOKINGS, values, KEY_BOOKING_ID + " = " + bundle.getString("BookingId"), null);
+            db.update(TABLE_BOOKINGS, values, KEY_BOOKING_ID + " = " + bundle.getString("BookingId"), null);
 
             // aktualizacja dorosłych w rezerwacji
             ContentValues adultsAccomodationValues = new ContentValues();
@@ -481,7 +486,6 @@ public class BookingsActivity extends ListActivity {
             // aktualizacja psa w rezerwacji
 
 
-
             ContentValues dogAccomodationValues = new ContentValues();
             dogAccomodationValues.put(KEY_CURR_PRICE, booking.getDogCurrentPrice());
             dogAccomodationValues.put(KEY_NUMBER_OF_ACCOMODATIONS, booking.getDog());
@@ -489,10 +493,10 @@ public class BookingsActivity extends ListActivity {
 
             // aktualizacja transportu z dworca
 
-                //sprawdzamy, czy w bazie danych pociąg jest dodany do rezerwacji
-                Cursor cursor = null;
-                String sql ="SELECT * FROM "+ TABLE_BOOKING_ADDITIONS +" WHERE " +  KEY_BOOKING_ID + "=" + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + "=" + "\"" + TRAIN_ADDITION + "\"";
-                cursor= db.rawQuery(sql,null);
+            //sprawdzamy, czy w bazie danych pociąg jest dodany do rezerwacji
+            Cursor cursor = null;
+            String sql = "SELECT * FROM " + TABLE_BOOKING_ADDITIONS + " WHERE " + KEY_BOOKING_ID + "=" + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + "=" + "\"" + TRAIN_ADDITION + "\"";
+            cursor = db.rawQuery(sql, null);
             if (booking.getTrain() > 0) {           //  transport z pociągu ma być dodany do rezerwacji
                 if (cursor.getCount() == 0) {            // pociągu nie było wcześniej w rezerwacji
                     // dodajemy pociąg do rezerwacji
@@ -502,20 +506,19 @@ public class BookingsActivity extends ListActivity {
                     trainValues.put(KEY_CURR_PRICE, booking.getTrainCurrentPrice());
                     db.insert(TABLE_BOOKING_ADDITIONS, null, trainValues);
                 }
-            }
-            else {                  // transportu z pociągu nie ma być w rezerwacji
-                    if (cursor.getCount() > 0) {           // pociąg był wcześniej w rezerwacji
-                        // usuwamy pociąg z rezerwacji
-                        db.delete(TABLE_BOOKING_ADDITIONS,KEY_BOOKING_ID + " = " + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + " = " + "\"" + TRAIN_ADDITION + "\"", null);
-                    }
+            } else {                  // transportu z pociągu nie ma być w rezerwacji
+                if (cursor.getCount() > 0) {           // pociąg był wcześniej w rezerwacji
+                    // usuwamy pociąg z rezerwacji
+                    db.delete(TABLE_BOOKING_ADDITIONS, KEY_BOOKING_ID + " = " + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + " = " + "\"" + TRAIN_ADDITION + "\"", null);
                 }
+            }
 
             // aktualizacja transportu z lotniska
 
             //sprawdzamy, czy w bazie danych lotnisko jest dodane do rezerwacji
             cursor = null;
-            sql ="SELECT * FROM "+ TABLE_BOOKING_ADDITIONS +" WHERE " +  KEY_BOOKING_ID + "=" + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + "=" + "\"" + AIRPORT_ADDITION + "\"";
-            cursor= db.rawQuery(sql,null);
+            sql = "SELECT * FROM " + TABLE_BOOKING_ADDITIONS + " WHERE " + KEY_BOOKING_ID + "=" + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + "=" + "\"" + AIRPORT_ADDITION + "\"";
+            cursor = db.rawQuery(sql, null);
 
             if (booking.getAirport() > 0) {           //  transport z lotniska ma być dodany do rezerwacji
 
@@ -528,19 +531,18 @@ public class BookingsActivity extends ListActivity {
                     airportValues.put(KEY_CURR_PRICE, booking.getAirportCurrentPrice());
                     db.insert(TABLE_BOOKING_ADDITIONS, null, airportValues);
                 }
-            }
-            else {                  // transportu z lotniska nie ma być w rezerwacji
+            } else {                  // transportu z lotniska nie ma być w rezerwacji
 
                 if (cursor.getCount() > 0) {           // lotnisko było wcześniej w rezerwacji
                     // usuwamy lotnisko z rezerwacji
-                    db.delete(TABLE_BOOKING_ADDITIONS,KEY_BOOKING_ID + " = " + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + " = " + "\"" + AIRPORT_ADDITION + "\"", null);
+                    db.delete(TABLE_BOOKING_ADDITIONS, KEY_BOOKING_ID + " = " + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + " = " + "\"" + AIRPORT_ADDITION + "\"", null);
                 }
             }
 
             //sprawdzamy, czy w bazie danych sprzątanie jest dodane do rezerwacji
             cursor = null;
-            sql ="SELECT * FROM " + TABLE_BOOKING_ADDITIONS +" WHERE " +  KEY_BOOKING_ID + "=" + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + "=" + "\"" + CLEANING_ADDITION + "\"";
-            cursor= db.rawQuery(sql,null);
+            sql = "SELECT * FROM " + TABLE_BOOKING_ADDITIONS + " WHERE " + KEY_BOOKING_ID + "=" + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + "=" + "\"" + CLEANING_ADDITION + "\"";
+            cursor = db.rawQuery(sql, null);
 
             if (booking.getCleaning() > 0) {           //  sprzątanie ma być dodane do rezerwacji
 
@@ -553,19 +555,23 @@ public class BookingsActivity extends ListActivity {
                     cleaningValues.put(KEY_CURR_PRICE, booking.getCleaningCurrentPrice());
                     db.insert(TABLE_BOOKING_ADDITIONS, null, cleaningValues);
                 }
-            }
-            else {                  // sprzątania nie ma być w rezerwacji
+            } else {                  // sprzątania nie ma być w rezerwacji
 
                 if (cursor.getCount() > 0) {           // sprzątanie było wcześniej w rezerwacji
                     // usuwamy sprzątanie z rezerwacji
-                    db.delete(TABLE_BOOKING_ADDITIONS,KEY_BOOKING_ID + " = " + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + " = " + "\"" + CLEANING_ADDITION + "\"", null);
+                    db.delete(TABLE_BOOKING_ADDITIONS, KEY_BOOKING_ID + " = " + bundle.getString("BookingId") + " and " + KEY_ADD_NAME + " = " + "\"" + CLEANING_ADDITION + "\"", null);
                 }
             }
-    }
+        }
 
-    /* public void deleteBooking(Booking booking) {
-        db.delete(TABLE_BOOKINGS, KEY_BOOKING_ID + " = ? ", new String[] {String.valueOf(booking.getBookingId())});
-    } */
+        public void deleteBooking(int idRezerwacji) {
+
+            //oznaczanie rezerwacji jako usuniętej
+            ContentValues values = new ContentValues();
+            values.put(KEY_DELETED, 1);
+            db.update(TABLE_BOOKINGS, values, KEY_BOOKING_ID + " = " + idRezerwacji, null);
+
+        }
 
         public void addBooking(Booking booking) {
 
@@ -592,23 +598,22 @@ public class BookingsActivity extends ListActivity {
 
             // dodawanie dzieci do rezerwacji
 
-                ContentValues babiesAccomodationValues = new ContentValues();
-                babiesAccomodationValues.put(KEY_BOOKING_ID, insertedId);
-                babiesAccomodationValues.put(KEY_ACC_NAME, BABY_ACCOMODATION);
-                babiesAccomodationValues.put(KEY_CURR_PRICE, booking.getBabiesCurrentPrice());
-                babiesAccomodationValues.put(KEY_NUMBER_OF_ACCOMODATIONS, booking.getNumberOfBabies());
-                db.insert(TABLE_BOOKING_ACCOMODATIONS, null, babiesAccomodationValues);
+            ContentValues babiesAccomodationValues = new ContentValues();
+            babiesAccomodationValues.put(KEY_BOOKING_ID, insertedId);
+            babiesAccomodationValues.put(KEY_ACC_NAME, BABY_ACCOMODATION);
+            babiesAccomodationValues.put(KEY_CURR_PRICE, booking.getBabiesCurrentPrice());
+            babiesAccomodationValues.put(KEY_NUMBER_OF_ACCOMODATIONS, booking.getNumberOfBabies());
+            db.insert(TABLE_BOOKING_ACCOMODATIONS, null, babiesAccomodationValues);
 
 
             // dodawanie psa do rezerwacji
 
-                ContentValues dogAccomodationValues = new ContentValues();
-                dogAccomodationValues.put(KEY_BOOKING_ID, insertedId);
-                dogAccomodationValues.put(KEY_ACC_NAME, DOG_ACCOMODATION);
-                dogAccomodationValues.put(KEY_CURR_PRICE, booking.getDogCurrentPrice());
-                dogAccomodationValues.put(KEY_NUMBER_OF_ACCOMODATIONS, booking.getDog());
-                db.insert(TABLE_BOOKING_ACCOMODATIONS, null, dogAccomodationValues);
-
+            ContentValues dogAccomodationValues = new ContentValues();
+            dogAccomodationValues.put(KEY_BOOKING_ID, insertedId);
+            dogAccomodationValues.put(KEY_ACC_NAME, DOG_ACCOMODATION);
+            dogAccomodationValues.put(KEY_CURR_PRICE, booking.getDogCurrentPrice());
+            dogAccomodationValues.put(KEY_NUMBER_OF_ACCOMODATIONS, booking.getDog());
+            db.insert(TABLE_BOOKING_ACCOMODATIONS, null, dogAccomodationValues);
 
 
             // dodawanie do rezerwacji transportu z dworca
@@ -644,12 +649,10 @@ public class BookingsActivity extends ListActivity {
             }
 
 
-
         }
 
         public ArrayList<HashMap<String, String>> showAllBookings() {
-            List<Booking> bookingList = new ArrayList<Booking>();
-            String selectQuery = "Select * from " + TABLE_BOOKINGS + " order by " + KEY_AR_DATE + " desc";
+            String selectQuery = "Select * from " + TABLE_BOOKINGS + " where " + KEY_DELETED + " = \"0\" order by " + KEY_AR_DATE + " desc";
             Cursor cursor = db.rawQuery(selectQuery, null);
             ArrayList<HashMap<String, String>> menuItems = new ArrayList<HashMap<String, String>>();
 
@@ -657,7 +660,7 @@ public class BookingsActivity extends ListActivity {
             if (cursor.moveToFirst()) {
                 do {
                     HashMap<String, String> map = new HashMap<String, String>();
-                    map.put(KEY_QUERY, "od: " + cursor.getString(6) + " do: " + cursor.getString(7) + " (" +cursor.getString(2) + ")");
+                    map.put(KEY_QUERY, " od: " + cursor.getString(6) + " do: " + cursor.getString(7) + " (" + cursor.getString(2) + ")");
                     map.put(KEY_ID, String.valueOf(cursor.getInt(0)));
                     menuItems.add(map);
 
@@ -702,8 +705,10 @@ public class BookingsActivity extends ListActivity {
                     bundle.getBoolean("cleaning"),
                     Double.valueOf(bundle.getString("cleaningPrice"))
             );
-            if(bundle.containsKey("BookingId")) db.updateBooking(booking);
+            if (bundle.containsKey("BookingId")) db.updateBooking(booking);
             else db.addBooking(booking);
+            intent = new Intent (this, MainActivity.class);
+            startActivity(intent);
         }
 
         ListAdapter adapter = new SimpleAdapter(BookingsActivity.this, db.showAllBookings(), R.layout.list_item, new String[]{KEY_QUERY, KEY_ID}, new int[]{R.id.queryTextViev, R.id.queryId});
@@ -725,13 +730,13 @@ public class BookingsActivity extends ListActivity {
         bundle.putString("adultsPrice", String.valueOf((db.getBooking(idRezerwacji).getAdultsCurrentPrice())));
         bundle.putString("babies", String.valueOf(db.getBooking(idRezerwacji).getNumberOfBabies()));
         bundle.putString("babiesPrice", String.valueOf((db.getBooking(idRezerwacji).getBabiesCurrentPrice())));
-        bundle.putString("dog",  String.valueOf(db.getBooking(idRezerwacji).getDog()));
+        bundle.putString("dog", String.valueOf(db.getBooking(idRezerwacji).getDog()));
         bundle.putString("dogPrice", String.valueOf((db.getBooking(idRezerwacji).getDogCurrentPrice())));
-        bundle.putString("train",   String.valueOf(db.getBooking(idRezerwacji).getTrain()));
+        bundle.putString("train", String.valueOf(db.getBooking(idRezerwacji).getTrain()));
         bundle.putString("trainPrice", String.valueOf((db.getBooking(idRezerwacji).getTrainCurrentPrice())));
-        bundle.putString("airport",  String.valueOf(db.getBooking(idRezerwacji).getAirport()));
+        bundle.putString("airport", String.valueOf(db.getBooking(idRezerwacji).getAirport()));
         bundle.putString("airportPrice", String.valueOf((db.getBooking(idRezerwacji).getAirportCurrentPrice())));
-        bundle.putString("cleaning",   String.valueOf(db.getBooking(idRezerwacji).getCleaning()));
+        bundle.putString("cleaning", String.valueOf(db.getBooking(idRezerwacji).getCleaning()));
         bundle.putString("cleaningPrice", String.valueOf((db.getBooking(idRezerwacji).getCleaningCurrentPrice())));
         bundle.putString("email", db.getBooking(idRezerwacji).getClientEmail());
         bundle.putString("phone", db.getBooking(idRezerwacji).getClientPhone());
@@ -740,5 +745,38 @@ public class BookingsActivity extends ListActivity {
         startActivity(intent);
     }
 
+    public void onDelete(final View view) {
+        ViewGroup row = (ViewGroup) view.getParent();
+        final TextView tekst = (TextView) row.getChildAt(0);
+        final int idRezerwacji = Integer.parseInt(tekst.getText().toString());
 
-}
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(R.string.deletingReservation)
+                .setMessage(R.string.deleteReservation)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.deleteBooking(idRezerwacji);
+                        refreshList();
+                    }
+
+                })
+                .setNegativeButton(R.string.no, null)
+                .show();
+
+
+
+
+
+        }
+
+    public void refreshList() {
+        finish();
+        Intent intent = new Intent (this, BookingsActivity.class);
+        startActivity(intent);
+    }
+
+
+    }

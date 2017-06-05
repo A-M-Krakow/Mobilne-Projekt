@@ -41,7 +41,7 @@
     <string name="totalPrice">Cena całkowita:</string>
     <string name="countPrices">Przelicz ceny</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="change">Zmień</string>
     <string name="SendMessage">Napisz wiadomość</string>
@@ -53,4 +53,9 @@
     <string name="newBooking">NOWA REZERWACJA</string>
     <string name="sendingPrices">Wysyłanie cen na serwer</string>
     <string name="pricesSent">Ceny wysłane na serwer!</string>
+    <string name="deleted">Usunięto</string>
+    <string name="deletingReservation">Usuwanie rezerwacji</string>
+    <string name="deleteReservation">Usunąć rezerwację?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
 </resources>

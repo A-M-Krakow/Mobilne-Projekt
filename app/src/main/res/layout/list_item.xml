@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
+    android:orientation="horizontal"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:paddingBottom="2dip"
+    android:paddingTop="6dip"
+    android:layout_margin="10dp">
 
     <TextView
         android:id="@+id/queryId"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="2dip"
         android:paddingTop="6dip"
@@ -15,20 +18,23 @@
         android:textIsSelectable="false"
         android:textAlignment="center"
         android:visibility="gone"
+
         />
+    <ImageView android:id="@+id/ImageSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_delete"
+        android:onClick="onDelete"/>
 
     <TextView
         android:id="@+id/queryTextViev"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
         android:textColor="#33b5e5"
         android:textIsSelectable="false"
         android:textSize="18sp"
         android:textAlignment="center"
         android:onClick="onItemClick"
-        android:layout_margin="10dp"
         />
 
 </LinearLayout>
