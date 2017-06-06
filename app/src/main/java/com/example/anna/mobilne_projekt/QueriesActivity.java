@@ -54,6 +54,8 @@ public class QueriesActivity extends ListActivity {
 
     private String url = "http://a-m.netstrefa.pl/retrieve2.php";
     private Document doc;
+    private SharedPreferences sharedPref;
+    Context context;
 
     private final String KEY_CLIENT = "klient";
     private final String KEY_QUERY = "zapytanie";
@@ -78,11 +80,14 @@ public class QueriesActivity extends ListActivity {
     String currentQueryId;
     private XMLParser parser = new XMLParser();
     private ProgressDialog dialog;
+    String lastQueryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queries);
+        context = this;
+        sharedPref = context.getSharedPreferences("lastQueryId", Context.MODE_PRIVATE);
 
         new ReadXMLTask().execute(url);
     }
@@ -136,9 +141,14 @@ public class QueriesActivity extends ListActivity {
                     map.put(KEY_QUERY, "od: " + parser.getValue(e, KEY_AR_DATE) + " do: " + parser.getValue(e, KEY_DEP_DATE) + " (" + parser.getValue(e, KEY_DAYS) + " dni) ");
                     map.put(KEY_ID, e.getAttribute("id"));
                     menuItems.add(map);
+                    lastQueryId = e.getAttribute("id");
                 }
                 ListAdapter adapter = new SimpleAdapter(QueriesActivity.this, menuItems, R.layout.list_item, new String[]{KEY_QUERY, KEY_ID}, new int[]{R.id.queryTextViev, R.id.queryId});
                 QueriesActivity.this.setListAdapter(adapter);
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("lastQueryId", lastQueryId);
+                editor.commit();
             }
             else {
                 finish();
