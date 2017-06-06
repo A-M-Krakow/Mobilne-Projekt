@@ -236,7 +236,7 @@ public class BookingActivity extends AppCompatActivity {
         Bundle bundle_out = new Bundle();
         if(bundle.containsKey("BookingId")) {
             bundle_out.putString("BookingId", bundle.getString("BookingId"));
-    }
+         }
         bundle_out.putString("name", nameEditText.getText().toString());
         bundle_out.putString("surname", surnameEditText.getText().toString());
         bundle_out.putString("ar_date", arDateEditText.getText().toString());
@@ -256,6 +256,7 @@ public class BookingActivity extends AppCompatActivity {
         bundle_out.putString("email", emailEditText.getText().toString());
         bundle_out.putString("phone", phoneEditText.getText().toString());
         intent_out.putExtras(bundle_out);
+        finish();
         startActivity(intent_out);
     }
 

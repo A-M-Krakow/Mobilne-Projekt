@@ -75,16 +75,9 @@ public class QueriesActivity extends ListActivity {
     private final String KEY_AIRPORT= "lotnisko";
     private final String KEY_DOG= "pies";
     private final String KEY_CLEANING= "sprzatanie";
-    int queryId;
+    String currentQueryId;
     private XMLParser parser = new XMLParser();
     private ProgressDialog dialog;
-
-
-
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,15 +191,15 @@ public class QueriesActivity extends ListActivity {
 
     public void onItemClick(View view) {
         ViewGroup row = (ViewGroup) view.getParent();
-        TextView tekst = (TextView) row.getChildAt(0);
-        String idZapytania = tekst.getText().toString();
+        TextView currentQueryIdTextViev = (TextView) row.getChildAt(0);
+        currentQueryId = currentQueryIdTextViev.getText().toString();
 
-        Element currentQuery = doc.getElementById(idZapytania);
+        Element currentQuery = doc.getElementById(currentQueryId);
 
         Intent intent = new Intent(this, QueryActivity.class);
 
         Bundle bundle = new Bundle();
-
+        bundle.putString("queryId", currentQueryId);
         bundle.putString("name",parser.getValue(currentQuery, KEY_NAME));
         bundle.putString("surname",parser.getValue(currentQuery, KEY_SURNAME));
         bundle.putString("email",parser.getValue(currentQuery, KEY_EMAIL));
@@ -221,6 +214,7 @@ public class QueriesActivity extends ListActivity {
         bundle.putString("dep_date",parser.getValue(currentQuery, KEY_DEP_DATE));
         bundle.putString("days",parser.getValue(currentQuery, KEY_DAYS));
 
+        finish();
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -228,7 +222,7 @@ public class QueriesActivity extends ListActivity {
     public void onDelete(final View view) {
         ViewGroup row = (ViewGroup) view.getParent();
         final TextView queryIdTextView = (TextView) row.getChildAt(0);
-        queryId = Integer.parseInt(queryIdTextView.getText().toString());
+        currentQueryId = queryIdTextView.getText().toString();
 
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -238,7 +232,7 @@ public class QueriesActivity extends ListActivity {
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteQuery(queryId);
+                        deleteQuery(Integer.parseInt(currentQueryId));
                     }
 
                 })
@@ -292,7 +286,7 @@ public class QueriesActivity extends ListActivity {
 
             try {
                 os = httpURLConnection.getOutputStream();
-                data = URLEncoder.encode("queryId", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(queryId), "UTF-8");
+                data = URLEncoder.encode("queryId", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(currentQueryId), "UTF-8");
                 bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
                 bufferedWriter.write(data);
                 bufferedWriter.flush();

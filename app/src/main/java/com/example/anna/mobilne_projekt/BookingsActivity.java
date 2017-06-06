@@ -707,8 +707,7 @@ public class BookingsActivity extends ListActivity {
             );
             if (bundle.containsKey("BookingId")) db.updateBooking(booking);
             else db.addBooking(booking);
-            intent = new Intent (this, MainActivity.class);
-            startActivity(intent);
+            refreshList();
         }
 
         ListAdapter adapter = new SimpleAdapter(BookingsActivity.this, db.showAllBookings(), R.layout.list_item, new String[]{KEY_QUERY, KEY_ID}, new int[]{R.id.queryTextViev, R.id.queryId});
@@ -742,6 +741,7 @@ public class BookingsActivity extends ListActivity {
         bundle.putString("phone", db.getBooking(idRezerwacji).getClientPhone());
 
         intent.putExtras(bundle);
+        finish();
         startActivity(intent);
     }
 

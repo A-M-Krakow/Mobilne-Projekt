@@ -1,9 +1,13 @@
 package com.example.anna.mobilne_projekt;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,12 +18,26 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLEncoder;
+
 public class QueryActivity extends AppCompatActivity {
     Bundle bundle;
     EditText phoneEditText;
     EditText emailEditText;
     EditText arDateEditText;
     EditText depDateEditText;
+    String currentQueryId;
+    Intent intent;
 
 
     @Override
@@ -48,6 +66,8 @@ public class QueryActivity extends AppCompatActivity {
         CheckBox cleaningCheckBox = (CheckBox) findViewById(R.id.cleaningCheckBox);
         CheckBox airportCheckBox = (CheckBox) findViewById(R.id.airportCheckBox);
         Intent intent = getIntent();
+
+        currentQueryId = bundle.getString("queryId");
         nameEditText.setText(bundle.getString("name"));
         surnameEditText.setText(bundle.getString("surname"));
 
@@ -98,10 +118,110 @@ public class QueryActivity extends AppCompatActivity {
     }
 
     public void bookThisQuery(View view){
-        Intent intent = new Intent(this, BookingActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        intent = new Intent(this, BookingActivity.class);
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(R.string.makingBooking)
+                .setMessage(R.string.makeBooking)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new makeBookingFromQueryTask().execute();
+                    }
 
+                })
+                .setNegativeButton(R.string.no, null)
+                .show();
+
+
+
+
+
+
+
+    }
+
+    private class makeBookingFromQueryTask extends AsyncTask<String, Void, String> {
+        private ProgressDialog dialog;
+
+        protected void onPreExecute() {
+            dialog = ProgressDialog.show(QueryActivity.this, "",
+                    getString(R.string.deletingQuery), true);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result = "";
+            String reg_url = "http://a-m.netstrefa.pl/delete.php";
+            URL url = null;
+            HttpURLConnection httpURLConnection = null;
+            String data = null;
+            OutputStream os = null;
+            BufferedWriter bufferedWriter = null;
+            int statusCode = 0;
+
+            try {
+                url = new URL(reg_url);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                os = httpURLConnection.getOutputStream();
+                data = URLEncoder.encode("queryId", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(currentQueryId), "UTF-8");
+                bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                statusCode = httpURLConnection.getResponseCode();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (statusCode == 200) {
+                BufferedReader reader = null;
+                try {
+                    reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                try {
+                    while ((line = reader.readLine()) != null)
+                        sb.append(line).append("\n");
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                result = sb.toString();
+            }
+            return result;
+
+        }
+
+        protected void onPostExecute(String result) {
+            dialog.dismiss();
+            if (result != "") {
+
+                finish();
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            } else {;
+                Toast.makeText(QueryActivity.this,
+                        R.string.noInternetConn, Toast.LENGTH_SHORT).show();
+
+            }
+        }
 
     }
 

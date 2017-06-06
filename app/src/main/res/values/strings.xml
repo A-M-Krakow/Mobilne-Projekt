@@ -61,4 +61,6 @@
     <string name="deletingQuery">Usuwanie zapytania!</string>
     <string name="deleteQuery">Usunąć zapytanie z serwera?</string>
     <string name="queryDeleted">Zapytanie usunięte!</string>
+    <string name="makingBooking">Tworzenie rezerwacji!</string>
+    <string name="makeBooking">Utworzenie rezerwacji usunie zapytanie z serwera. Kontynuować?</string>
 </resources>
