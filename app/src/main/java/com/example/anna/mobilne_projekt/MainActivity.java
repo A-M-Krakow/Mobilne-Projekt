@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
@@ -34,31 +35,34 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
     Button queriesButton;
+    NotificationManager notificationManager;
+    Notification notification;
     private String lastQueryId;
     Context context;
     SharedPreferences sharedPref;
     SharedPreferences sharedPrefLastQuery;
+    boolean notificationPresent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = this;
-        sharedPrefLastQuery = context.getSharedPreferences("lastQueryId", Context.MODE_PRIVATE);
         queriesButton = (Button) findViewById(R.id.queriesButton);
-        lastQueryId = sharedPrefLastQuery.getString("lastQueryId", "0");
-        checkNewQueries();
+
+        setRepeatingAsyncTask();
     }
 
     public void showNotification() {
         PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, QueriesActivity.class), 0);
         Resources r = getResources();
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Notification notification = new NotificationCompat.Builder(this)
+        notification = new NotificationCompat.Builder(this)
                 .setTicker(r.getString(R.string.notification_title))
                 .setSmallIcon(android.R.drawable.ic_menu_report_image)
                 .setContentTitle(r.getString(R.string.notification_title))
@@ -68,14 +72,18 @@ public class MainActivity extends AppCompatActivity {
                 .setSound(uri)
                 .build();
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notification.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
+
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, notification);
+        notificationPresent = true;
     }
 
-    public void showQueries(View view)
-    {
+    public void showQueries(View view) {
         context = this;
         sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        if (notificationPresent) notificationManager.cancelAll();
 
         if(sharedPref.contains(getString(R.string.adultPrice))) {
             Intent intent = new Intent(this, QueriesActivity.class);
@@ -88,33 +96,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void makeBooking(View view)
-    {
+    public void makeBooking(View view) {
         Intent intent = new Intent(this, BookingActivity.class);
         startActivity(intent);
     }
 
-    public void setPrices(View view)
-    {
+    public void setPrices(View view) {
         Intent intent = new Intent(this, PricesActivity.class);
         startActivity(intent);
     }
 
-    public void showBookings(View view)
-    {
+    public void showBookings(View view) {
         Intent intent = new Intent(this, BookingsActivity.class);
         startActivity(intent);
     }
 
-    public void checkNewQueries() {
-        
-        new checkNewQueriesTask().execute();
-    }
 
     private class checkNewQueriesTask extends AsyncTask<String, Void, String> {
         private ProgressDialog dialog;
 
         protected void onPreExecute() {
+
+            sharedPrefLastQuery = context.getSharedPreferences("lastQueryId", Context.MODE_PRIVATE);
+            lastQueryId = sharedPrefLastQuery.getString("lastQueryId", "0");
         }
 
         @Override
@@ -144,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 os = httpURLConnection.getOutputStream();
-                char[] currentQueryId;
                 data = URLEncoder.encode("queryId", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lastQueryId), "UTF-8");
                 bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
                 bufferedWriter.write(data);
@@ -183,6 +186,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    private void setRepeatingAsyncTask() {
+
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+        context = this;
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            checkNewQueriesTask task = new checkNewQueriesTask();
+                            task.execute();
+                        } catch (Exception e) {
+                        }
+                    }
+                });
+            }
+        };
+
+        timer.schedule(task, 0, 60*100);
+    }
+
+
 
 
 }

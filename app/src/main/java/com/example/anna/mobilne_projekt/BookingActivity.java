@@ -153,7 +153,7 @@ public class BookingActivity extends AppCompatActivity {
         intent.setType("text/plain");
 
         intent.putExtra(Intent.EXTRA_EMAIL, email);
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Rezerwacja mieszkania w Krakowie od: " + arDateEditText.getText().toString() + " do: " + depDateEditText.getText().toString());
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.from) + arDateEditText.getText().toString() + getString(R.string.upTo) + depDateEditText.getText().toString());
         try {
             startActivity(Intent.createChooser(intent, getString(R.string.choosseEmaiClient)));
             finish();

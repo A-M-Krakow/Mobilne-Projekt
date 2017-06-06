@@ -129,6 +129,7 @@ public class QueriesActivity extends ListActivity {
             dialog.dismiss();
 
             if (result != "") {
+                lastQueryId = "0";
 
                 doc = parser.getDomElement(result);
                 ArrayList<HashMap<String, String>> menuItems = new ArrayList<HashMap<String, String>>();
@@ -141,7 +142,8 @@ public class QueriesActivity extends ListActivity {
                     map.put(KEY_QUERY, "od: " + parser.getValue(e, KEY_AR_DATE) + " do: " + parser.getValue(e, KEY_DEP_DATE) + " (" + parser.getValue(e, KEY_DAYS) + " dni) ");
                     map.put(KEY_ID, e.getAttribute("id"));
                     menuItems.add(map);
-                    lastQueryId = e.getAttribute("id");
+                    if ( Integer.parseInt(e.getAttribute("id")) > Integer.parseInt(lastQueryId) )
+                        lastQueryId = e.getAttribute("id");
                 }
                 ListAdapter adapter = new SimpleAdapter(QueriesActivity.this, menuItems, R.layout.list_item, new String[]{KEY_QUERY, KEY_ID}, new int[]{R.id.queryTextViev, R.id.queryId});
                 QueriesActivity.this.setListAdapter(adapter);

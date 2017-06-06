@@ -65,4 +65,6 @@
     <string name="makeBooking">Utworzenie rezerwacji usunie zapytanie z serwera. Kontynuować?</string>
     <string name="notification_title">Nowe zapytanie!</string>
     <string name="notification_text">Na serwerze czeka nowe zapytanie od klienta!</string>
+    <string name="from">Rezerwacja mieszkania w Krakowie od:</string>
+    <string name="upTo">do:</string>
 </resources>
