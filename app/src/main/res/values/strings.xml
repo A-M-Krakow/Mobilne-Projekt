@@ -63,4 +63,6 @@
     <string name="queryDeleted">Zapytanie usunięte!</string>
     <string name="makingBooking">Tworzenie rezerwacji!</string>
     <string name="makeBooking">Utworzenie rezerwacji usunie zapytanie z serwera. Kontynuować?</string>
+    <string name="notification_title">Nowe zapytanie!</string>
+    <string name="notification_text">Na serwerze czeka nowe zapytanie od klienta!</string>
 </resources>

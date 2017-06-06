@@ -1,15 +1,25 @@
 package com.example.anna.mobilne_projekt;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-import com.example.anna.mobilne_projekt.R;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.app.NotificationManager;
+import android.view.View;
+import android.content.Context;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +30,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         queriesButton = (Button) findViewById(R.id.queriesButton);
+        showNotification();
+    }
+
+    public void showNotification() {
+        PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, QueriesActivity.class), 0);
+        Resources r = getResources();
+        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Notification notification = new NotificationCompat.Builder(this)
+                .setTicker(r.getString(R.string.notification_title))
+                .setSmallIcon(android.R.drawable.ic_menu_report_image)
+                .setContentTitle(r.getString(R.string.notification_title))
+                .setContentText(r.getString(R.string.notification_text))
+                .setContentIntent(pi)
+                .setAutoCancel(true)
+                .setSound(uri)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, notification);
     }
 
     public void showQueries(View view)
@@ -59,3 +88,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
+
