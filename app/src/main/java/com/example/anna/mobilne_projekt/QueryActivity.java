@@ -1,23 +1,17 @@
 package com.example.anna.mobilne_projekt;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -72,10 +66,10 @@ public class QueryActivity extends AppCompatActivity {
         surnameEditText.setText(bundle.getString("surname"));
 
 
-        Boolean dogBool = (!bundle.getString("dog").equals("0")) ? true : false;
-        Boolean trainBool = (!bundle.getString("train").equals("0")) ? true : false;
-        Boolean airportBool = (!bundle.getString("airport").equals("0")) ? true : false;
-        Boolean cleaningBool = (!bundle.getString("cleaning").equals("0")) ? true : false;
+        Boolean dogBool = (!bundle.getString("dog").equals("0"));
+        Boolean trainBool = (!bundle.getString("train").equals("0"));
+        Boolean airportBool = (!bundle.getString("airport").equals("0"));
+        Boolean cleaningBool = (!bundle.getString("cleaning").equals("0"));
 
 
         dogCheckBox.setChecked(dogBool);
@@ -133,11 +127,6 @@ public class QueryActivity extends AppCompatActivity {
                 })
                 .setNegativeButton(R.string.no, null)
                 .show();
-
-
-
-
-
 
 
     }
@@ -216,7 +205,7 @@ public class QueryActivity extends AppCompatActivity {
                 intent.putExtras(bundle);
                 startActivity(intent);
 
-            } else {;
+            } else {
                 Toast.makeText(QueryActivity.this,
                         R.string.noInternetConn, Toast.LENGTH_SHORT).show();
 

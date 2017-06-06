@@ -9,30 +9,19 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class BookingsActivity extends ListActivity {
     DatabaseHandler db;
-    private final String KEY_CLIENT = "klient";
     private final String KEY_QUERY = "zapytanie";
-    private final String KEY_DESCRIPTION = "opis";
-
     private final String KEY_ID = "IdZapytania";
-    private final String KEY_NAME = "ImieKlienta";
-    private final String KEY_SURNAME = "NazwiskoKlienta";
-    private final String KEY_EMAIL = "emailKlienta";
-    private final String KEY_PHONE = "telefonKlienta";
     Bundle bundle;
 
     public class Booking {
@@ -680,7 +669,6 @@ public class BookingsActivity extends ListActivity {
 
         db = new DatabaseHandler(this);
 
-        Intent intent = getIntent();
         bundle = getIntent().getExtras();
 
         if (bundle != null) {

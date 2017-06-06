@@ -91,15 +91,12 @@ public class BookingActivity extends AppCompatActivity {
         adultsEditText.setOnFocusChangeListener(onFocusChangeListener);
         babiesEditText.setOnFocusChangeListener(onFocusChangeListener);
 
-        Intent intent = getIntent();
-
-
         nameEditText.setText(bundle.getString("name"));
         surnameEditText.setText(bundle.getString("surname"));
-        Boolean dogBool = (!bundle.getString("dog").equals("0")) ? true : false;
-        Boolean trainBool = (!bundle.getString("train").equals("0")) ? true : false;
-        Boolean airportBool = (!bundle.getString("airport").equals("0")) ? true : false;
-        Boolean cleaningBool = (!bundle.getString("cleaning").equals("0")) ? true : false;
+        Boolean dogBool = (!bundle.getString("dog").equals("0"));
+        Boolean trainBool = (!bundle.getString("train").equals("0"));
+        Boolean airportBool = (!bundle.getString("airport").equals("0"));
+        Boolean cleaningBool = (!bundle.getString("cleaning").equals("0"));
         dogCheckBox.setChecked(dogBool);
         trainCheckBox.setChecked(trainBool);
         airportCheckBox.setChecked(airportBool);

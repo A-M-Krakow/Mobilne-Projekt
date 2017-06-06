@@ -12,13 +12,7 @@
     <string name="dog">Pies: </string>
     <string name="airport">Lotnisko: </string>
     <string name="cleaning">Sprzątanie: </string>
-    <string name="days_number">Ilość dni: </string>
-    <string name="download_Data">Pobierz dane</string>
     <string name="days">Dni:</string>
-    <string name="call">Zadzwoń</string>
-    <string name="emailClient">Napisz wiadomość</string>
-    <string name="yesMessage">Email - POTWIERDŹ</string>
-    <string name="noMessage">Email - ODRZUĆ</string>
     <string name="choosseEmaiClient">Wybierz program do wysłania wiadomości:</string>
     <string name="noEmailApp">Brak aplikacji email!</string>
     <string name="noInternetConn">Brak połączenia z Internetem!</string>
@@ -37,23 +31,17 @@
     <string name="dogPrice">Pies: </string>
     <string name="cleaningPrice">Sprzątanie: </string>
     <string name="price">Cena: </string>
-    <string name="cena_ca_kowitatotalPrice">Cena całkowita:</string>
     <string name="totalPrice">Cena całkowita:</string>
-    <string name="countPrices">Przelicz ceny</string>
 
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="change">Zmień</string>
-    <string name="SendMessage">Napisz wiadomość</string>
     <string name="showBookings">Pokaż rezerwacje</string>
     <string name="showQueries">Pokaż zapytania</string>
     <string name="Bookings">Rezerwacje:</string>
     <string name="save">Zapisz</string>
     <string name="noPricelist">Najpierw ustaw ceny!</string>
-    <string name="newBooking">NOWA REZERWACJA</string>
     <string name="sendingPrices">Wysyłanie cen na serwer</string>
     <string name="pricesSent">Ceny wysłane na serwer!</string>
-    <string name="deleted">Usunięto</string>
     <string name="deletingReservation">Usuwanie rezerwacji</string>
     <string name="deleteReservation">Usunąć rezerwację?</string>
     <string name="yes">Tak</string>

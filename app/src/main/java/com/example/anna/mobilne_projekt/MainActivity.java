@@ -3,7 +3,6 @@ package com.example.anna.mobilne_projekt;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,12 +17,6 @@ import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.app.NotificationManager;
-import android.view.View;
-import android.content.Context;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -113,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private class checkNewQueriesTask extends AsyncTask<String, Void, String> {
-        private ProgressDialog dialog;
 
         protected void onPreExecute() {
 
