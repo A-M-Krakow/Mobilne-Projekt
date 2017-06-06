@@ -38,6 +38,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -52,10 +53,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class QueriesActivity extends ListActivity {
 
-    private String url = "http://a-m.netstrefa.pl/retrieve2.php";
     private Document doc;
     private SharedPreferences sharedPref;
     Context context;
+
+    private String magicWord = "abcdefg";
 
     private final String KEY_CLIENT = "klient";
     private final String KEY_QUERY = "zapytanie";
@@ -89,7 +91,7 @@ public class QueriesActivity extends ListActivity {
         context = this;
         sharedPref = context.getSharedPreferences("lastQueryId", Context.MODE_PRIVATE);
 
-        new ReadXMLTask().execute(url);
+        new ReadXMLTask().execute();
     }
 
     private class ReadXMLTask extends AsyncTask<String, Void, String> {
@@ -102,27 +104,59 @@ public class QueriesActivity extends ListActivity {
         }
 
         protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection conn;
+            String selectResult = "";
+            String select_url = "http://a-m.netstrefa.pl/retrieve2.php";
+            URL url_select = null;
+            HttpURLConnection conn = null;
+            String outputData = null;
+            OutputStream out = null;
+            BufferedWriter bWriter = null;
+            int selectStatusCode = 0;
 
             try {
-                URL url = new URL(urls[0]);
-                conn = (HttpURLConnection) url.openConnection();
-                conn.connect();
-                InputStream is = conn.getInputStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                String s = "";
+                url_select = new URL(select_url);
+                conn = (HttpURLConnection) url_select.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
 
-                while ((s = br.readLine()) != null) {
-                    response +=s;
-                }
-                conn.disconnect();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return response;
+            try {
+                out = conn.getOutputStream();
+                outputData = URLEncoder.encode("magicWord", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(magicWord), "UTF-8");
+                bWriter = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+                bWriter.write(outputData);
+                bWriter.flush();
+                selectStatusCode = conn.getResponseCode();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (selectStatusCode == 200) {
+                BufferedReader reader = null;
+                try {
+                    reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                StringBuilder sb = new StringBuilder();
+                String line;
 
+                try {
+                    while ((line = reader.readLine()) != null)
+                        sb.append(line).append("\n");
+                    bWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                selectResult = sb.toString();
+            }
+            return selectResult;
         }
 
         protected void onPostExecute(String result) {
