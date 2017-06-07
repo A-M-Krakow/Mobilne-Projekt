@@ -91,7 +91,7 @@ public class QueriesActivity extends ListActivity {
 
         protected String doInBackground(String... urls) {
             String selectResult = "";
-            String select_url = "http://a-m.netstrefa.pl/retrieve2.php";
+            String select_url = "http://a-m.netstrefa.pl/database/retrieve2.php";
             URL url_select = null;
             HttpURLConnection conn = null;
             String outputData = null;
@@ -294,7 +294,7 @@ public class QueriesActivity extends ListActivity {
         @Override
         protected String doInBackground(String... params) {
             String result = "";
-            String reg_url = "http://a-m.netstrefa.pl/delete.php";
+            String reg_url = "http://a-m.netstrefa.pl/database/delete.php";
             URL url = null;
             HttpURLConnection httpURLConnection = null;
             String data = null;

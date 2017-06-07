@@ -37,7 +37,7 @@ public class PricesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String url = new String("http://a-m.netstrefa.pl/update.php");
+        String url = new String("http://a-m.netstrefa.pl/database/update.php");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prices);
         context = this;
@@ -83,7 +83,7 @@ public class PricesActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String result = "";
-            String reg_url = "http://a-m.netstrefa.pl/update.php";
+            String reg_url = "http://a-m.netstrefa.pl/database/update.php";
             URL url = null;
             HttpURLConnection httpURLConnection = null;
             String data = null;

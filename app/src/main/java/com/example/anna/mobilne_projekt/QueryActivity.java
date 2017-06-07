@@ -142,7 +142,7 @@ public class QueryActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String result = "";
-            String reg_url = "http://a-m.netstrefa.pl/delete.php";
+            String reg_url = "http://a-m.netstrefa.pl/database/delete.php";
             URL url = null;
             HttpURLConnection httpURLConnection = null;
             String data = null;
